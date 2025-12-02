@@ -6,14 +6,8 @@ class AppTextTheme {
   /// Builds a TextTheme based on the provided [colors].
   static TextTheme buildTextTheme(SemanticColors colors) {
     return TextTheme(
-      bodyLarge: TextStyle(
-        color: colors.colorTextPrimary,
-        fontSize: 16,
-      ),
-      bodyMedium: TextStyle(
-        color: colors.colorTextSecondary,
-        fontSize: 14,
-      ),
+      bodyLarge: TextStyle(color: colors.colorTextPrimary, fontSize: 16),
+      bodyMedium: TextStyle(color: colors.colorTextSecondary, fontSize: 14),
       titleLarge: TextStyle(
         color: colors.colorTextPrimary,
         fontWeight: FontWeight.bold,
@@ -35,6 +29,7 @@ class AppTextTheme {
         fontWeight: FontWeight.w600,
         fontSize: 20,
       ),
+
       // caption, subtitle, button, etc.
     );
   }

@@ -11,19 +11,21 @@ ThemeData buildThemeData(SemanticColors colors, bool isDark) {
       seedColor: colors.colorAccent,
       brightness: brightness,
     ),
-    
-    textTheme: AppTextTheme.buildTextTheme(colors), // ✅ Use our centralized text theme
+
+    textTheme: AppTextTheme.buildTextTheme(
+      colors,
+    ), // ✅ Use our centralized text theme
 
     useMaterial3: true,
     brightness: brightness,
-    scaffoldBackgroundColor: colors.colorBgSurface,
-    
+    scaffoldBackgroundColor: colors.backgroundColor,
+
     appBarTheme: AppBarTheme(
       backgroundColor: colors.colorAccent,
       foregroundColor: Colors.white,
     ),
-    dividerColor: colors.colorBorder.withOpacity(0.4),
-    cardColor: colors.colorBgElevated,
-    iconTheme: IconThemeData(color: colors.colorTextPrimary.withOpacity(0.9)),
+    dividerColor: colors.border,
+    cardColor: colors.backgroundCard,
+    iconTheme: IconThemeData(color: colors.icon),
   );
 }

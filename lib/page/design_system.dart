@@ -10,7 +10,6 @@ class DesignSystemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeState = context.watch<ThemeCubit>().state;
     final colors = themeState.colors;
-    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -19,20 +18,6 @@ class DesignSystemPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Typography Section
-            // Text('Typography', style: textTheme.titleLarge),
-            // const SizedBox(height: 8),
-            // Text('Heading Large', style: textTheme.headlineLarge),
-            // const SizedBox(height: 8.0),
-            // Text('Heading Medium', style: textTheme.headlineMedium),
-            // const SizedBox(height: 8.0),
-            // Text('Title Large', style: textTheme.titleLarge),
-            // const SizedBox(height: 8.0),
-            // Text('Body Large', style: textTheme.bodyLarge),
-            // const SizedBox(height: 8.0),
-            // Text('Body Medium', style: textTheme.bodyMedium),
-            // const SizedBox(height: 8.0),
-            // Text('Label Large', style: textTheme.labelLarge),
-
             Text(
               'Welcome Back',
               style: AppTextStyles.headingLarge,

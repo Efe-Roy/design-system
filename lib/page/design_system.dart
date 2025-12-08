@@ -1,3 +1,4 @@
+import 'package:design_system/blocs/theme/app_text_style.dart';
 import 'package:design_system/blocs/theme/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,7 @@ class DesignSystemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeState = context.watch<ThemeCubit>().state;
     final colors = themeState.colors;
-    final textTheme = Theme.of(context).textTheme;
+    //final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -18,19 +19,19 @@ class DesignSystemPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Typography Section
-            Text('Typography', style: textTheme.titleLarge),
-            const SizedBox(height: 8),
-            Text('Heading Large', style: textTheme.headlineLarge),
+            Text('Typography', style: GlobusTypography.display2xlBold),
             const SizedBox(height: 8.0),
-            Text('Heading Medium', style: textTheme.headlineMedium),
+            Text('Heading Large', style: GlobusTypography.displayXlBold),
             const SizedBox(height: 8.0),
-            Text('Title Large', style: textTheme.titleLarge),
+            Text('Heading Medium', style: GlobusTypography.displayLgBold),
             const SizedBox(height: 8.0),
-            Text('Body Large', style: textTheme.bodyLarge),
+            Text('Title Large', style: GlobusTypography.displayMdBold),
             const SizedBox(height: 8.0),
-            Text('Body Medium', style: textTheme.bodyMedium),
+            Text('Body Large', style: GlobusTypography.displaySmBold),
             const SizedBox(height: 8.0),
-            Text('Label Large', style: textTheme.labelLarge),
+            Text('Body Medium', style: GlobusTypography.displayXsBold),
+            const SizedBox(height: 8.0),
+            Text('Label Large', style: GlobusTypography.displayXlBold),
 
             Row(
               children: [
@@ -41,10 +42,13 @@ class DesignSystemPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Dark Mode'),
-                      Text('Switch theme',
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: colors.colorTextSecondary)),
+                      Text(
+                        'Switch theme',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colors.colorTextSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -54,11 +58,9 @@ class DesignSystemPage extends StatelessWidget {
                 ),
               ],
             ),
-
           ],
         ),
       ),
     );
   }
-
 }

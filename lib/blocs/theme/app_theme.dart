@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
-
-import 'app_text_theme.dart';
 import 'semantic_tokens.dart';
 
+//final SemanticColors colors = SemanticColors.light();
 ThemeData buildThemeData(SemanticColors colors, bool isDark) {
   final brightness = isDark ? Brightness.dark : Brightness.light;
 
+  // Get ColorScheme from your SemanticColors
+  final colorScheme = colors.toColorScheme(isDark: isDark);
+
   return ThemeData(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: colors.colorAccent,
-      brightness: brightness,
-    ),
-
-    textTheme: AppTextTheme.buildTextTheme(
-      colors,
-    ), // ✅ Use our centralized text theme
-
     useMaterial3: true,
     brightness: brightness,
     scaffoldBackgroundColor: colors.backgroundColor,
+    colorScheme: colorScheme,
 
     appBarTheme: AppBarTheme(
-      backgroundColor: colors.colorAccent,
+      backgroundColor: colors.surface,
       foregroundColor: Colors.white,
     ),
     dividerColor: colors.border,

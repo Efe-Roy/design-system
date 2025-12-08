@@ -8,10 +8,5 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await getItInit(); // sets up locator/navigatorKey etc.
 
-  runApp(
-    BlocProvider(
-      create: (context) => ThemeCubit(),
-      child: const App(),
-    ),
-  );
+  runApp(BlocProvider(create: (context) => ThemeCubit(), child: const App()));
 }

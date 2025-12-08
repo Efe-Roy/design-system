@@ -377,6 +377,35 @@ class SemanticColors {
     required this.surfaceBoldTransparentFull,
   });
 
+  ColorScheme toColorScheme({bool isDark = false}) {
+    return ColorScheme(
+      brightness: isDark ? Brightness.dark : Brightness.light,
+
+      primary: surface,
+      onPrimary: text,
+
+      secondary: icon,
+      onSecondary: iconSubtle,
+
+      surface: backgroundCard,
+      onSurface: text,
+
+      error: textDanger,
+      onError: textDangerInverse,
+
+      // These are required but you can safely map them to your closest tokens
+      primaryContainer: backgroundBtnDisabled,
+      onPrimaryContainer: textDisabled,
+
+      secondaryContainer: backgroundCard,
+      onSecondaryContainer: textSubtle,
+
+      // Outline (borders)
+      outline: border,
+      outlineVariant: borderSubtle,
+    );
+  }
+
   factory SemanticColors.light() {
     return const SemanticColors(
       colorBgSurface: Colors.white,

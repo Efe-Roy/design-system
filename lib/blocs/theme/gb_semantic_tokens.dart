@@ -1,8 +1,9 @@
 // core/theme/semantic_tokens.dart
 import 'package:flutter/material.dart';
-import 'color_tokens.dart';
+import 'gb_color_tokens.dart';
 
-class SemanticColors {
+@immutable
+class SemanticColors extends ThemeExtension<SemanticColors> {
   final Color colorBgSurface;
   final Color colorBgElevated;
   final Color colorTextPrimary;
@@ -376,6 +377,12 @@ class SemanticColors {
     required this.surfaceBoldTransparent20,
     required this.surfaceBoldTransparentFull,
   });
+
+  static SemanticColors of(BuildContext context) {
+    final colors = Theme.of(context).extension<SemanticColors>();
+    assert(colors != null, 'SemanticColors not found in Theme');
+    return colors!;
+  }
 
   ColorScheme toColorScheme({bool isDark = false}) {
     return ColorScheme(
@@ -784,5 +791,201 @@ class SemanticColors {
       surfaceBoldTransparent20: ColorTokens.gray25Opa20,
       surfaceBoldTransparentFull: ColorTokens.gray25Opa0,
     );
+  }
+
+  @override
+  SemanticColors copyWith({
+    Color? backgroundColor,
+    Color? surface,
+    Color? border,
+    Color? icon,
+  }) {
+    return SemanticColors(
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      surface: surface ?? this.surface,
+      border: border ?? this.border,
+      icon: icon ?? this.icon,
+
+      // 🔒 everything else is copied as-is
+      colorBgSurface: colorBgSurface,
+      colorBgElevated: colorBgElevated,
+      colorTextPrimary: colorTextPrimary,
+      colorTextSecondary: colorTextSecondary,
+      colorTextOnAccent: colorTextOnAccent,
+      colorBorder: colorBorder,
+      colorAccent: colorAccent,
+
+      textBold: textBold,
+      text: text,
+      textSubtle: textSubtle,
+      textDisabled: textDisabled,
+      textInverse: textInverse,
+      textBrandDarkBlue: textBrandDarkBlue,
+      textBrandRed: textBrandRed,
+      textSelected: textSelected,
+      textDangerBold: textDangerBold,
+      textDanger: textDanger,
+      textDangerSubtle: textDangerSubtle,
+      textDangerInverse: textDangerInverse,
+      textWarningBold: textWarningBold,
+      textWarning: textWarning,
+      textWarningSubtle: textWarningSubtle,
+      textSuccessBold: textSuccessBold,
+      textSuccess: textSuccess,
+      textSuccessSubtle: textSuccessSubtle,
+      textDiscoveryBold: textDiscoveryBold,
+      textDiscovery: textDiscovery,
+      textDiscoverySubtle: textDiscoverySubtle,
+      textInformationBold: textInformationBold,
+      textInformation: textInformation,
+      textInformationSubtle: textInformationSubtle,
+      textPurpleBold: textPurpleBold,
+      textPurple: textPurple,
+      textPurpleSubtle: textPurpleSubtle,
+      textPinkBold: textPinkBold,
+      textPink: textPink,
+      textPinkSubtle: textPinkSubtle,
+
+      link: link,
+      linkPressed: linkPressed,
+      linkVisited: linkVisited,
+
+      iconBolder: iconBolder,
+      iconSubtle: iconSubtle,
+      iconDisabled: iconDisabled,
+      iconInverse: iconInverse,
+      iconDarkBlue: iconDarkBlue,
+      iconBrandRed: iconBrandRed,
+      iconSelected: iconSelected,
+      iconDanger: iconDanger,
+      iconDangerInverse: iconDangerInverse,
+      iconDangerBolder: iconDangerBolder,
+      iconWarning: iconWarning,
+      iconWarningBolder: iconWarningBolder,
+      iconSuccess: iconSuccess,
+      iconSuccessBolder: iconSuccessBolder,
+      iconDiscovery: iconDiscovery,
+      iconDiscoveryBolder: iconDiscoveryBolder,
+      iconInformation: iconInformation,
+      iconInformationBolder: iconInformationBolder,
+      iconPurple: iconPurple,
+      iconPurpleBolder: iconPurpleBolder,
+      iconPink: iconPink,
+      iconPinkBolder: iconPinkBolder,
+
+      borderBolder: borderBolder,
+      borderSubtle: borderSubtle,
+      borderSubtler: borderSubtler,
+      borderDisabled: borderDisabled,
+      borderInverse: borderInverse,
+      borderInput: borderInput,
+      borderFocus: borderFocus,
+      borderSelected: borderSelected,
+      borderDarkBlue: borderDarkBlue,
+      borderBrandRed: borderBrandRed,
+      borderDangerBolder: borderDangerBolder,
+      borderDanger: borderDanger,
+      borderDangerSubtle: borderDangerSubtle,
+      borderDangerSubtler: borderDangerSubtler,
+      borderWarningBolder: borderWarningBolder,
+      borderWarning: borderWarning,
+      borderWarningSubtle: borderWarningSubtle,
+      borderWarningSubtler: borderWarningSubtler,
+      borderSuccessBolder: borderSuccessBolder,
+      borderSuccess: borderSuccess,
+      borderSuccessSubtle: borderSuccessSubtle,
+      borderSuccessSubtler: borderSuccessSubtler,
+      borderDiscoveryBolder: borderDiscoveryBolder,
+      borderDiscovery: borderDiscovery,
+      borderDiscoverySubtle: borderDiscoverySubtle,
+      borderDiscoverySubtler: borderDiscoverySubtler,
+      borderInformationBolder: borderInformationBolder,
+      borderInformation: borderInformation,
+      borderInformationSubtle: borderInformationSubtle,
+      borderInformationSubtler: borderInformationSubtler,
+      borderPurpleBolder: borderPurpleBolder,
+      borderPurple: borderPurple,
+      borderPurpleSubtle: borderPurpleSubtle,
+      borderPurpleSubtler: borderPurpleSubtler,
+      borderPinkBold: borderPinkBold,
+      borderPink: borderPink,
+      borderPinkSubtle: borderPinkSubtle,
+      borderPinkSubtler: borderPinkSubtler,
+
+      backgroundCardBolder: backgroundCardBolder,
+      backgroundCard: backgroundCard,
+      backgroundInput: backgroundInput,
+      backgroundDisabled: backgroundDisabled,
+      backgroundBtnDisabled: backgroundBtnDisabled,
+      backgroundSelected: backgroundSelected,
+      backgroundDarkBlue: backgroundDarkBlue,
+      backgroundBrandRed: backgroundBrandRed,
+      backgroundBrandRedHover: backgroundBrandRedHover,
+      backgroundBrandRedPressed: backgroundBrandRedPressed,
+      backgroundGrayBolder: backgroundGrayBolder,
+      backgroundGray: backgroundGray,
+      backgroundGraySubtle: backgroundGraySubtle,
+      backgroundGraySubtler: backgroundGraySubtler,
+      backgroundGraySubtlest: backgroundGraySubtlest,
+      backgroundDangerBolder: backgroundDangerBolder,
+      backgroundDanger: backgroundDanger,
+      backgroundDangerSubtle: backgroundDangerSubtle,
+      backgroundDangerSubtler: backgroundDangerSubtler,
+      backgroundDangerSubtlest: backgroundDangerSubtlest,
+      backgroundWarningBold: backgroundWarningBold,
+      backgroundWarning: backgroundWarning,
+      backgroundWarningSubtle: backgroundWarningSubtle,
+      backgroundWarningSubtler: backgroundWarningSubtler,
+      backgroundWarningSubtlest: backgroundWarningSubtlest,
+      backgroundSuccessBolder: backgroundSuccessBolder,
+      backgroundSuccess: backgroundSuccess,
+      backgroundSuccessSubtle: backgroundSuccessSubtle,
+      backgroundSuccessSubtler: backgroundSuccessSubtler,
+      backgroundSuccessSubtlest: backgroundSuccessSubtlest,
+      backgroundDiscoveryBolder: backgroundDiscoveryBolder,
+      backgroundDiscovery: backgroundDiscovery,
+      backgroundDiscoverySubtle: backgroundDiscoverySubtle,
+      backgroundDiscoverySubtler: backgroundDiscoverySubtler,
+      backgroundDiscoverySubtlest: backgroundDiscoverySubtlest,
+      backgroundInformationBolder: backgroundInformationBolder,
+      backgroundInformation: backgroundInformation,
+      backgroundInformationSubtle: backgroundInformationSubtle,
+      backgroundInformationSubtler: backgroundInformationSubtler,
+      backgroundInformationSubtlest: backgroundInformationSubtlest,
+      backgroundPurpleBolder: backgroundPurpleBolder,
+      backgroundPurple: backgroundPurple,
+      backgroundPurpleSubtle: backgroundPurpleSubtle,
+      backgroundPurpleSubtler: backgroundPurpleSubtler,
+      backgroundPurpleSubtlest: backgroundPurpleSubtlest,
+      backgroundPinkBolder: backgroundPinkBolder,
+      backgroundPink: backgroundPink,
+      backgroundPinkSubtle: backgroundPinkSubtle,
+      backgroundPinkSubtler: backgroundPinkSubtler,
+      backgroundPinkSubtlest: backgroundPinkSubtlest,
+
+      blanket: blanket,
+      blanketSubtle: blanketSubtle,
+      blanketSubtler: blanketSubtler,
+
+      skeleton: skeleton,
+
+      surfaceBold: surfaceBold,
+      surfaceHovered: surfaceHovered,
+      surfacePressed: surfacePressed,
+
+      surfaceTransparent50: surfaceTransparent50,
+      surfaceTransparent20: surfaceTransparent20,
+      surfaceTransparentFull: surfaceTransparentFull,
+      surfaceBoldTransparent50: surfaceBoldTransparent50,
+      surfaceBoldTransparent20: surfaceBoldTransparent20,
+      surfaceBoldTransparentFull: surfaceBoldTransparentFull,
+    );
+  }
+
+  @override
+  SemanticColors lerp(ThemeExtension<SemanticColors>? other, double t) {
+    if (other is! SemanticColors) return this;
+
+    return this;
   }
 }

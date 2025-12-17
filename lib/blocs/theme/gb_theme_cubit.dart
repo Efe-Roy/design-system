@@ -1,7 +1,7 @@
 // core/blocs/theme/theme_cubit.dart
 import 'package:design_system/util/auth_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'theme_state.dart';
+import 'gb_theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit() : super(ThemeState.light()) {

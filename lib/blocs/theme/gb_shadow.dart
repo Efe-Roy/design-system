@@ -37,7 +37,7 @@ class GlobusShadows {
     offset: Offset(0, 8),
   );
 
-  static const BoxShadow x2l = BoxShadow(
+  static const BoxShadow xxl = BoxShadow(
     color: Color(0x2D0F1728),
     blurRadius: 48.0,
     spreadRadius: -12.0,

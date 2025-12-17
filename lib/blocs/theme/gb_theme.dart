@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'semantic_tokens.dart';
+import 'gb_semantic_tokens.dart';
 
 //final SemanticColors colors = SemanticColors.light();
 ThemeData buildThemeData(SemanticColors colors, bool isDark) {
@@ -13,6 +13,7 @@ ThemeData buildThemeData(SemanticColors colors, bool isDark) {
     brightness: brightness,
     scaffoldBackgroundColor: colors.backgroundColor,
     colorScheme: colorScheme,
+    extensions: <ThemeExtension<dynamic>>[colors],
 
     appBarTheme: AppBarTheme(
       backgroundColor: colors.surface,

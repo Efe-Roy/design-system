@@ -1,6 +1,7 @@
-import 'package:design_system/blocs/theme/app_text_style.dart';
-import 'package:design_system/blocs/theme/theme_cubit.dart';
-import 'package:design_system/core/common/widget/custom_button.dart';
+import 'package:design_system/blocs/theme/gb_text_style.dart';
+import 'package:design_system/blocs/theme/gb_theme_cubit.dart';
+import 'package:design_system/core/common/components/gb_button/gb_button.dart';
+import 'package:design_system/core/common/components/gb_button/gb_button_files.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,65 +34,60 @@ class DesignSystemPage extends StatelessWidget {
             const SizedBox(height: 8.0),
             Text('Label Large', style: GlobusTypography.displayXlBold),
 
-            // Filled button (default)
-            CustomButton(
-              text: "Submit",
-              onPressed: () {},
-              backgroundColor: Colors.blue,
-              textColor: Colors.white,
-            ),
+            SizedBox(height: 16),
 
-            // Outlined button
-            CustomButton(
-              text: "Cancel",
-              onPressed: () {},
-              backgroundColor: Colors.transparent, // For outlined buttons, background is transparent
-              textColor: Colors.blue,
-              isOutlined: true,
-            ),
+            Column(
+              children: [
+                GbButton(label: 'Small Button', size: sm, onPressed: () {}),
+                SizedBox(height: 16), // Add space between buttons
+                GbButton(
+                  label: 'Large Button',
+                  size: xxl,
+                  hierarchy: tertiaryGray,
+                  isFullWidth: true,
+                  onPressed: () {},
+                ),
 
-            // Outlined button with custom border color
-            CustomButton(
-              text: "Edit Profile",
-              onPressed: () {},
-              backgroundColor: Colors.transparent,
-              textColor: Colors.purple,
-              isOutlined: true,
-              borderColor: Colors.purple,
-            ),
+                SizedBox(height: 16),
 
-            // Outlined button with icons
-            CustomButton(
-              text: "Export",
-              onPressed: () {},
-              backgroundColor: Colors.transparent,
-              textColor: Colors.green,
-              isOutlined: true,
-              isFullWidth: false,
-              iconBefore: Icon(Icons.circle_outlined, color: Colors.green),
-              iconAfter: Icon(Icons.download, color: Colors.green),
-              borderWidth: 2.0,
-            ),
-
-            // Thicker border
-            CustomButton(
-              text: "Delete",
-              onPressed: () {},
-              backgroundColor: Colors.transparent,
-              textColor: Colors.red,
-              isOutlined: true,
-              borderColor: Colors.red,
-              borderWidth: 2.0,
-            ),
-
-            // Using theme colors for outlined button
-            CustomButton(
-              text: "Learn More",
-              onPressed: () {},
-              backgroundColor: Colors.transparent,
-              textColor: Theme.of(context).primaryColor,
-              isOutlined: true,
-              borderColor: Theme.of(context).primaryColor,
+                GbButton(
+                  label: 'Large Button',
+                  size: xxl,
+                  hierarchy: secondaryGray,
+                  isFullWidth: true,
+                  state: pressed,
+                  onPressed: () {},
+                ),
+                SizedBox(height: 16),
+                GbButton(
+                  label: 'Cancel',
+                  hierarchy: secondaryGray,
+                  onPressed: () {},
+                ),
+                SizedBox(height: 16),
+                GbButton(
+                  label: 'Learn more',
+                  hierarchy: tertiaryColor,
+                  onPressed: () {},
+                ),
+                SizedBox(height: 16),
+                GbButton(
+                  label: 'Forgot password?',
+                  hierarchy: linkColor,
+                  onPressed: () {},
+                ),
+                SizedBox(height: 16),
+                GbButton(
+                  label: 'Delete account',
+                  destructive: true,
+                  hierarchy: primary,
+                  onPressed: () {},
+                ),
+                SizedBox(height: 16),
+                GbButton(label: 'Continue', state: disabled, onPressed: () {}),
+                SizedBox(height: 16),
+                GbButton(label: 'Submitting', state: loading, onPressed: () {}),
+              ],
             ),
 
             Row(

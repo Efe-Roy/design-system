@@ -181,7 +181,6 @@ class DesignSystemPage extends StatelessWidget {
 
             Column(
               children: [
-                // Example 1: Basic password field with visibility toggle
                 GBTextField(
                   labelText: 'Country',
                   prefix: Icon(Icons.currency_bitcoin),
@@ -200,7 +199,6 @@ class DesignSystemPage extends StatelessWidget {
 
                 SizedBox(height: 16),
 
-                // Example 2: Password field with help icon and visibility toggle
                 GBTextField(
                   labelText: 'Create Password',
                   hintText: 'At least 8 characters with letters and numbers',
@@ -242,7 +240,6 @@ class DesignSystemPage extends StatelessWidget {
 
                 SizedBox(height: 16),
 
-                // Example 4: Regular text field that needs to be obscured (PIN code)
                 GBTextField(
                   labelText: 'PIN Code',
                   hintText: 'Enter 4-digit PIN',
@@ -258,6 +255,26 @@ class DesignSystemPage extends StatelessWidget {
                     return null;
                   },
                 ),
+
+                SizedBox(height: 16),
+
+                GBTextField(
+                  labelText: 'Website',
+                  hintText: 'Enter website',
+                  prefix: Text('https://'),
+                  controller: TextEditingController(),
+                  keyboardType: TextInputType.url,
+                  prefixOutsideBorder: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'Website is required';
+                    if (!RegExp(r'^[a-zA-Z0-9.-]+$').hasMatch(value))
+                      return 'Website must contain only letters, numbers, dots, and hyphens';
+                    return null;
+                  },
+                ),
+
+                SizedBox(height: 46),
               ],
             ),
           ],

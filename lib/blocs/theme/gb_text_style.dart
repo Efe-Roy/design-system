@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-//======Primitive======
+//====== Primitive ======
+const String fontFamilySora = 'Sora';
+
+// Display sizes
 const double fontSizeD2xl = 48.0;
 const double fontLineHeightD2xl = 1.375;
 const double fontLetterSpacingD2xl = -0.96;
@@ -25,6 +28,7 @@ const double fontSizeDXs = 20;
 const double fontLineHeightDXs = 1.40;
 const double fontLetterSpacingDXs = 0.00;
 
+// Text sizes
 const double fontSizeTXl = 20;
 const double fontLineHeightTXl = 1.6;
 const double fontLetterSpacingTXl = 0.00;
@@ -50,150 +54,145 @@ const double fontLineHeightTXxs = 1.8;
 const double fontLetterSpacingTXxs = 0.00;
 
 class GlobusTypography {
-  // ========= Display =========
+  // ========= DISPLAY =========
 
-  // =========================
-  // DISPLAY 2XL
-  // =========================
   static const TextStyle display2xlBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeD2xl,
-    fontWeight: FontWeight.w700, // Bold
-    height: fontLineHeightD2xl, // 54px line-height / 48px font-size
-    letterSpacing: fontLetterSpacingD2xl,
-  );
-
-  static const TextStyle display2xlSemiBold = TextStyle(
-    fontSize: fontSizeD2xl,
-    fontWeight: FontWeight.w600, // SemiBold
+    fontWeight: FontWeight.w700,
     height: fontLineHeightD2xl,
     letterSpacing: fontLetterSpacingD2xl,
   );
 
-  // =========================
-  // DISPLAY XL
-  // =========================
+  static const TextStyle display2xlSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
+    fontSize: fontSizeD2xl,
+    fontWeight: FontWeight.w600,
+    height: fontLineHeightD2xl,
+    letterSpacing: fontLetterSpacingD2xl,
+  );
 
   static const TextStyle displayXlBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDxl,
     fontWeight: FontWeight.w700,
-    height: fontLineHeightDxl, // 50px / 40px
+    height: fontLineHeightDxl,
     letterSpacing: fontLetterSpacingDxl,
   );
 
   static const TextStyle displayXlSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDxl,
     fontWeight: FontWeight.w700,
-    height: fontLineHeightDxl, // 50px / 40px
+    height: fontLineHeightDxl,
     letterSpacing: fontLetterSpacingDxl,
   );
 
-  // =========================
-  // DISPLAY LG
-  // =========================
-
   static const TextStyle displayLgBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDLg,
     fontWeight: FontWeight.w700,
-    height: fontLineHeightDLg, // 40px / 32px
+    height: fontLineHeightDLg,
     letterSpacing: fontLetterSpacingDLg,
   );
 
   static const TextStyle displayLgSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDLg,
     fontWeight: FontWeight.w600,
-    height: fontLineHeightDLg, // 40px / 32px
+    height: fontLineHeightDLg,
     letterSpacing: fontLetterSpacingDLg,
   );
 
-  // =========================
-  // DISPLAY MD
-  // =========================
-
   static const TextStyle displayMdBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDMd,
     fontWeight: FontWeight.w700,
-    height: fontLineHeightDMd, // 34.2px / 28px
+    height: fontLineHeightDMd,
     letterSpacing: fontLetterSpacingDMd,
   );
 
   static const TextStyle displayMdSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDMd,
     fontWeight: FontWeight.w600,
-    height: fontLineHeightDMd, // 34.2px / 28px
+    height: fontLineHeightDMd,
     letterSpacing: fontLetterSpacingDMd,
   );
 
-  // =========================
-  // DISPLAY SM
-  // =========================
-
   static const TextStyle displaySmBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDSm,
     fontWeight: FontWeight.w700,
-    height: fontLineHeightDSm, // 32px / 24px
+    height: fontLineHeightDSm,
     letterSpacing: fontLetterSpacingDSm,
   );
 
   static const TextStyle displaySmSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDSm,
     fontWeight: FontWeight.w600,
-    height: fontLineHeightDSm, // 32px / 24px
+    height: fontLineHeightDSm,
     letterSpacing: fontLetterSpacingDSm,
   );
 
-  // =========================
-  // DISPLAY XS
-  // =========================
-
   static const TextStyle displayXsBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDXs,
     fontWeight: FontWeight.w700,
-    height: fontLineHeightDXs, // 28px / 20px
+    height: fontLineHeightDXs,
     letterSpacing: fontLetterSpacingDXs,
   );
 
   static const TextStyle displayXsSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeDXs,
     fontWeight: FontWeight.w600,
-    height: fontLineHeightDXs, // 28px / 20px
+    height: fontLineHeightDXs,
     letterSpacing: fontLetterSpacingDXs,
   );
 
-  // =========================
-  // TEXT XL
-  // =========================
+  // ========= TEXT =========
+
   static const TextStyle textXlBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXl,
     fontWeight: FontWeight.w700,
-    height: fontLineHeightTXl, // 32 / 20
+    height: fontLineHeightTXl,
     letterSpacing: fontLetterSpacingTXl,
   );
 
   static const TextStyle textXlSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXl,
     fontWeight: FontWeight.w600,
-    height: fontLineHeightTXl, // 32 / 20
+    height: fontLineHeightTXl,
     letterSpacing: fontLetterSpacingTXl,
   );
 
   static const TextStyle textXlMedium = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXl,
     fontWeight: FontWeight.w500,
-    height: fontLineHeightTXl, // 32 / 20
+    height: fontLineHeightTXl,
     letterSpacing: fontLetterSpacingTXl,
   );
 
   static const TextStyle textXlRegular = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXl,
     fontWeight: FontWeight.w400,
-    height: fontLineHeightTXl, // 32 / 20
+    height: fontLineHeightTXl,
     letterSpacing: fontLetterSpacingTXl,
   );
+
+  // (Remaining text styles continue with the same pattern…)
 
   // =========================
   // TEXT LG
   // =========================
   static const TextStyle textLgBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTLg,
     fontWeight: FontWeight.w700,
     height: fontLineHeightTLg, // 30 / 18
@@ -201,6 +200,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textLgSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTLg,
     fontWeight: FontWeight.w600,
     height: fontLineHeightTLg, // 30 / 18
@@ -208,6 +208,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textLgMedium = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTLg,
     fontWeight: FontWeight.w500,
     height: fontLineHeightTLg, // 30 / 18
@@ -215,6 +216,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textLgRegular = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTLg,
     fontWeight: FontWeight.w400,
     height: fontLineHeightTLg, // 30 / 18
@@ -225,6 +227,7 @@ class GlobusTypography {
   // TEXT MD
   // =========================
   static const TextStyle textMdBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTMd,
     fontWeight: FontWeight.w700,
     height: fontLineHeightTMd, // 27 / 16
@@ -232,6 +235,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textMdSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTMd,
     fontWeight: FontWeight.w600,
     height: fontLineHeightTMd, // 27 / 16
@@ -239,6 +243,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textMdMedium = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTMd,
     fontWeight: FontWeight.w500,
     height: fontLineHeightTMd, // 27 / 16
@@ -246,6 +251,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textMdRegular = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTMd,
     fontWeight: FontWeight.w400,
     height: fontLineHeightTMd, // 27 / 16
@@ -256,6 +262,7 @@ class GlobusTypography {
   // TEXT SM
   // =========================
   static const TextStyle textSmBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTSm,
     fontWeight: FontWeight.w700,
     height: fontLineHeightTSm, // 24 / 14
@@ -263,6 +270,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textSmSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTSm,
     fontWeight: FontWeight.w600,
     height: fontLineHeightTSm, // 24 / 14
@@ -270,6 +278,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textSmMedium = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTSm,
     fontWeight: FontWeight.w500,
     height: fontLineHeightTSm, // 24 / 14
@@ -277,6 +286,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textSmRegular = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTSm,
     fontWeight: FontWeight.w400,
     height: fontLineHeightTSm, // 24 / 14
@@ -287,6 +297,7 @@ class GlobusTypography {
   // TEXT XS
   // =========================
   static const TextStyle textXsBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXs,
     fontWeight: FontWeight.w700,
     height: fontLineHeightTXs, // 20 / 12
@@ -294,6 +305,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textXsSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXs,
     fontWeight: FontWeight.w600,
     height: fontLineHeightTXs, // 20 / 12
@@ -301,6 +313,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textXsMedium = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXs,
     fontWeight: FontWeight.w500,
     height: fontLineHeightTXs, // 20 / 12
@@ -308,6 +321,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textXsRegular = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: 12,
     fontWeight: FontWeight.w400,
     height: fontLineHeightTXs, // 20 / 12
@@ -318,6 +332,7 @@ class GlobusTypography {
   // TEXT XXS
   // =========================
   static const TextStyle textXxsBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXxs,
     fontWeight: FontWeight.w700,
     height: fontLineHeightTXxs, // 18 / 10
@@ -325,6 +340,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textXxsSemiBold = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXxs,
     fontWeight: FontWeight.w600,
     height: fontLineHeightTXxs, // 18 / 10
@@ -332,6 +348,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textXxsMedium = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXxs,
     fontWeight: FontWeight.w500,
     height: fontLineHeightTXxs, // 18 / 10
@@ -339,6 +356,7 @@ class GlobusTypography {
   );
 
   static const TextStyle textXxsRegular = TextStyle(
+    fontFamily: fontFamilySora,
     fontSize: fontSizeTXxs,
     fontWeight: FontWeight.w400,
     height: fontLineHeightTXxs, // 18 / 10

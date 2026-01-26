@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:design_system/blocs/theme/gb_semantic_tokens.dart';
-import 'gb_button_files.dart';
+//import 'gb_button_files.dart';
 import 'gb_button_extensions.dart';
+//import 'gb_button_extensions.dart';
+import 'gb_button_size.dart';
+import 'gb_button_types.dart';
+import 'gb_button_colors.dart';
+//import 'gb_button_aliases.dart';
 
 class GbButton extends StatefulWidget {
   final String label;
@@ -13,6 +18,7 @@ class GbButton extends StatefulWidget {
   final Widget? leadingIcon;
   final Widget? trailingIcon;
   final bool isFullWidth;
+  final bool respectConstraints;
 
   const GbButton({
     super.key,
@@ -25,6 +31,7 @@ class GbButton extends StatefulWidget {
     this.leadingIcon,
     this.trailingIcon,
     this.isFullWidth = false,
+    this.respectConstraints = false, // 👈 ADD
   });
 
   @override
@@ -134,6 +141,10 @@ class _GbButtonState extends State<GbButton> {
         ),
       ),
     );
+
+    if (widget.respectConstraints) {
+      return button;
+    }
 
     return widget.isFullWidth
         ? SizedBox(width: double.infinity, child: button)

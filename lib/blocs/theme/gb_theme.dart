@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'gb_semantic_tokens.dart';
+import 'gb_text_style.dart';
 
 //final SemanticColors colors = SemanticColors.light();
 ThemeData buildThemeData(SemanticColors colors, bool isDark) {
@@ -11,6 +12,7 @@ ThemeData buildThemeData(SemanticColors colors, bool isDark) {
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
+    fontFamily: fontFamilySora,
     scaffoldBackgroundColor: colors.backgroundColor,
     colorScheme: colorScheme,
     extensions: <ThemeExtension<dynamic>>[colors],

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:design_system/blocs/theme/gb_semantic_tokens.dart';
-import 'gb_button_files.dart';
+//import 'gb_button_files.dart';
+//import 'gb_button_extensions.dart';
+//import 'gb_button_size.dart';
+import 'gb_button_types.dart';
+import 'gb_button_aliases.dart';
 
 class GbButtonColors {
   final Color background;

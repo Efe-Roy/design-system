@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:design_system/blocs/theme/gb_spacing.dart';
 import 'package:design_system/blocs/theme/gb_text_style.dart';
-import 'gb_button_files.dart';
+//import 'gb_button_size.dart';
+import 'gb_button_types.dart';
+//import 'gb_button_files.dart';
 
 class GbButtonSizeConfig {
   final double? height;

@@ -4,8 +4,7 @@ class GBTextField extends StatefulWidget {
   final String? labelText;
   final String? hintText;
   final Widget? prefix;
-  final Widget?
-  suffix; // Custom suffix (dropdown, icon, etc.) that comes BEFORE clear button
+  final Widget? suffix;
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
@@ -24,13 +23,13 @@ class GBTextField extends StatefulWidget {
   final Color? clearButtonColor;
   final double? clearButtonSize;
   final EdgeInsets? clearButtonPadding;
-  final bool showHelpIcon; // Show help/alert circle icon
-  final String? helpText; // Text to show when help icon is tapped
+  final bool showHelpIcon;
+  final String? helpText;
   final Color? helpIconColor;
   final Color? errorIconColor;
   final double? helpIconSize;
   final VoidCallback? onHelpIconTap;
-  final bool isPasswordField; // Special handling for password fields
+  final bool isPasswordField;
   final bool prefixOutsideBorder;
 
   const GBTextField({
@@ -76,15 +75,14 @@ class _GBTextFieldState extends State<GBTextField> {
   String? _errorText;
   late FocusNode _internalFocusNode;
   late TextEditingController _internalController;
-  final bool _showHelpTooltip = false;
-  bool _obscureText = true; // For password visibility toggle
+  bool _obscureText = true;
 
   @override
   void initState() {
     super.initState();
     _internalFocusNode = widget.focusNode ?? FocusNode();
     _internalController = widget.controller;
-    _obscureText = widget.obscureText; // Initialize with widget value
+    _obscureText = widget.obscureText;
 
     _internalFocusNode.addListener(_onFocusChange);
     _internalController.addListener(_onTextChanged);
@@ -99,7 +97,6 @@ class _GBTextFieldState extends State<GBTextField> {
       _internalController = widget.controller;
     }
 
-    // Update obscure text if widget property changed
     if (oldWidget.obscureText != widget.obscureText) {
       _obscureText = widget.obscureText;
     }
@@ -140,11 +137,7 @@ class _GBTextFieldState extends State<GBTextField> {
   void _clearText() {
     _internalController.clear();
     _internalFocusNode.requestFocus();
-
-    if (widget.onChanged != null) {
-      widget.onChanged!('');
-    }
-
+    widget.onChanged?.call('');
     _onTextChanged();
   }
 
@@ -152,6 +145,56 @@ class _GBTextFieldState extends State<GBTextField> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  void _showHelpDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(_isValid ? 'Help' : 'Error'),
+        content: Text(_isValid ? widget.helpText! : _errorText!),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildBorder({
+    required bool isError,
+    required bool isFocused,
+    bool isDisabled = false,
+    bool usePartialRadius = false,
+  }) {
+    Color borderColor;
+    double borderWidth;
+
+    if (isDisabled) {
+      borderColor = Colors.grey[300]!;
+      borderWidth = 1.5;
+    } else if (isError) {
+      borderColor = Theme.of(context).colorScheme.error;
+      borderWidth = 2.0;
+    } else if (isFocused) {
+      borderColor = Colors.blue;
+      borderWidth = 2.0;
+    } else {
+      borderColor = Colors.grey[300]!;
+      borderWidth = 1.5;
+    }
+
+    return OutlineInputBorder(
+      borderRadius: usePartialRadius
+          ? const BorderRadius.only(
+              topRight: Radius.circular(8),
+              bottomRight: Radius.circular(8),
+            )
+          : BorderRadius.circular(8),
+      borderSide: BorderSide(color: borderColor, width: borderWidth),
+    );
   }
 
   Widget _buildHelpIcon() {
@@ -179,23 +222,6 @@ class _GBTextFieldState extends State<GBTextField> {
     );
   }
 
-  void _showHelpDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(_isValid ? 'Help' : 'Error'),
-        content: Text(_isValid ? widget.helpText! : _errorText!),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Build password visibility toggle icon
   Widget _buildPasswordVisibilityToggle() {
     if (!widget.isPasswordField && !widget.obscureText) {
       return const SizedBox.shrink();
@@ -212,7 +238,7 @@ class _GBTextFieldState extends State<GBTextField> {
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 12,
-              color: Colors.black, // Using black for high contrast
+              color: Colors.black,
             ),
           ),
         ),
@@ -220,43 +246,22 @@ class _GBTextFieldState extends State<GBTextField> {
     );
   }
 
-  // Build the combined suffix with clear button LAST and help icon if needed
   Widget _buildSuffix() {
     final hasText = _internalController.text.isNotEmpty;
-    final isFocused = _internalFocusNode.hasFocus;
     final showClear =
-        widget.showClearButton && hasText && isFocused && widget.enabled;
+        widget.showClearButton &&
+        hasText &&
+        _internalFocusNode.hasFocus &&
+        widget.enabled;
 
-    // Build children in order
-    final children = <Widget>[];
-
-    // 1. Help/Error icon (always visible if showHelpIcon is true)
-    if (widget.showHelpIcon) {
-      children.add(_buildHelpIcon());
-      if (widget.suffix != null || showClear || widget.isPasswordField) {
-        children.add(const SizedBox(width: 4));
-      }
-    }
-
-    // 2. Password visibility toggle (for password fields)
-    if (widget.isPasswordField || widget.obscureText) {
-      children.add(_buildPasswordVisibilityToggle());
-      if (widget.suffix != null || showClear) {
-        children.add(const SizedBox(width: 4));
-      }
-    }
-
-    // 3. Add custom suffix if provided
-    if (widget.suffix != null) {
-      children.add(widget.suffix!);
-      if (showClear) {
-        children.add(const SizedBox(width: 8));
-      }
-    }
-
-    // 4. Add clear button LAST (if shown)
-    if (showClear) {
-      children.add(
+    final children = <Widget>[
+      if (widget.showHelpIcon) ...[_buildHelpIcon(), const SizedBox(width: 4)],
+      if (widget.isPasswordField || widget.obscureText) ...[
+        _buildPasswordVisibilityToggle(),
+        const SizedBox(width: 4),
+      ],
+      if (widget.suffix != null) ...[widget.suffix!, const SizedBox(width: 8)],
+      if (showClear)
         GestureDetector(
           onTap: _clearText,
           behavior: HitTestBehavior.opaque,
@@ -269,306 +274,181 @@ class _GBTextFieldState extends State<GBTextField> {
             ),
           ),
         ),
-      );
-    }
+      const SizedBox(width: 8),
+    ];
 
-    // If no children, return empty SizedBox
-    if (children.isEmpty) {
-      return const SizedBox.shrink();
-    }
+    return children.length <= 1
+        ? const SizedBox.shrink()
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: children,
+          );
+  }
 
-    // Add spacing at the end
-    children.add(const SizedBox(width: 8));
+  Widget _buildLabel() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              widget.labelText!,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: _isValid
+                    ? Colors.grey[700]
+                    : Theme.of(context).colorScheme.error,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          if (widget.showHelpIcon && widget.helpText != null && _isValid)
+            GestureDetector(
+              onTap: () => _showHelpDialog(context),
+              child: Icon(
+                Icons.help_outline,
+                size: 16,
+                color: Colors.grey[500],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 
-    // Return as a Row with all children
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: children,
+  Widget _buildTextFormField({bool hasExternalPrefix = false}) {
+    final shouldShowPasswordToggle =
+        widget.isPasswordField || widget.obscureText;
+
+    return TextFormField(
+      controller: _internalController,
+      validator: widget.validator,
+      keyboardType: widget.keyboardType,
+      cursorColor: Colors.black,
+      obscureText: shouldShowPasswordToggle ? _obscureText : widget.obscureText,
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
+      enabled: widget.enabled,
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+        _onTextChanged();
+      },
+      onTap: widget.onTap,
+      focusNode: _internalFocusNode,
+      textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      autofocus: widget.autofocus,
+      onTapOutside: (_) {
+        _onTextChanged();
+        _internalFocusNode.unfocus();
+      },
+      decoration: InputDecoration(
+        contentPadding:
+            widget.contentPadding ??
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        prefixIcon: !hasExternalPrefix && widget.prefix != null
+            ? Padding(
+                padding: const EdgeInsets.only(left: 12, right: 8),
+                child: widget.prefix,
+              )
+            : null,
+        prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+        suffixIcon: _buildSuffix(),
+        suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+        filled: true,
+        fillColor: widget.enabled ? Colors.grey[50] : Colors.grey[200],
+        hintText: widget.hintText,
+        hintStyle: TextStyle(color: Colors.grey[500]),
+        border: _buildBorder(
+          isError: !_isValid,
+          isFocused: false,
+          usePartialRadius: hasExternalPrefix,
+        ),
+        enabledBorder: _buildBorder(
+          isError: !_isValid,
+          isFocused: false,
+          usePartialRadius: hasExternalPrefix,
+        ),
+        focusedBorder: _buildBorder(
+          isError: !_isValid,
+          isFocused: true,
+          usePartialRadius: hasExternalPrefix,
+        ),
+        disabledBorder: _buildBorder(
+          isError: false,
+          isFocused: false,
+          isDisabled: true,
+        ),
+        errorBorder: _buildBorder(isError: true, isFocused: false),
+        focusedErrorBorder: _buildBorder(isError: true, isFocused: true),
+      ),
+    );
+  }
+
+  Widget _buildHintOrError() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (_errorText != null ||
+              (widget.showHelpIcon && widget.helpText != null))
+            Padding(
+              padding: const EdgeInsets.only(right: 4.0, top: 1.0),
+              child: Icon(
+                _errorText != null ? Icons.error_outline : Icons.help_outline,
+                size: 14,
+                color: _errorText != null
+                    ? Theme.of(context).colorScheme.error
+                    : Colors.grey[500],
+              ),
+            ),
+          Expanded(
+            child: Text(
+              _errorText ?? widget.hintText!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: _errorText != null
+                    ? Theme.of(context).colorScheme.error
+                    : Colors.grey[600],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Determine if we should show password visibility toggle
-    final shouldShowPasswordToggle =
-        widget.isPasswordField || widget.obscureText;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Label at the top (only if provided)
-        if (widget.labelText != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4.0),
+        if (widget.labelText != null) _buildLabel(),
+
+        if (widget.prefixOutsideBorder && widget.prefix != null)
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[300]!, width: 1.5),
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Text(
-                    widget.labelText!,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: _isValid
-                          ? Colors.grey[700]
-                          : Theme.of(context).colorScheme.error,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: widget.prefix,
                 ),
-                // Optional help icon in the label area
-                if (widget.showHelpIcon && widget.helpText != null && _isValid)
-                  GestureDetector(
-                    onTap: () => _showHelpDialog(context),
-                    child: Icon(
-                      Icons.help_outline,
-                      size: 16,
-                      color: Colors.grey[500],
-                    ),
-                  ),
+                Expanded(child: _buildTextFormField(hasExternalPrefix: true)),
               ],
             ),
-          ),
-
-        // Text field with prefix/suffix
-        // Text field with prefix/suffix
-        if (widget.prefixOutsideBorder && widget.prefix != null)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: widget.prefix,
-              ),
-              Expanded(
-                child: TextFormField(
-                  controller: _internalController,
-                  validator: widget.validator,
-                  keyboardType: widget.keyboardType,
-                  cursorColor: Colors.black,
-                  obscureText: shouldShowPasswordToggle
-                      ? _obscureText
-                      : widget.obscureText,
-                  maxLines: widget.maxLines,
-                  minLines: widget.minLines,
-                  enabled: widget.enabled,
-                  onChanged: (value) {
-                    widget.onChanged?.call(value);
-                    _onTextChanged();
-                  },
-                  onTap: widget.onTap,
-                  focusNode: _internalFocusNode,
-                  textInputAction: widget.textInputAction,
-                  onFieldSubmitted: widget.onFieldSubmitted,
-                  autofocus: widget.autofocus,
-                  onTapOutside: (_) {
-                    _onTextChanged();
-                    _internalFocusNode.unfocus();
-                  },
-                  decoration: InputDecoration(
-                    contentPadding:
-                        widget.contentPadding ??
-                        const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 16,
-                        ),
-                    // Prefix is handled outside
-                    prefixIcon: null,
-                    suffixIcon: _buildSuffix(),
-                    suffixIconConstraints: const BoxConstraints(
-                      minWidth: 0,
-                      minHeight: 0,
-                    ),
-                    filled: true,
-                    fillColor: widget.enabled
-                        ? Colors.grey[50]
-                        : Colors.grey[200],
-                    hintText: widget.hintText,
-                    hintStyle: TextStyle(color: Colors.grey[500]),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: _isValid
-                            ? Colors.grey[300]!
-                            : Theme.of(context).colorScheme.error,
-                        width: 1.5,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: _isValid
-                            ? Colors.grey[300]!
-                            : Theme.of(context).colorScheme.error,
-                        width: 1.5,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: _isValid
-                            ? Colors.blue
-                            : Theme.of(context).colorScheme.error,
-                        width: 2.0,
-                      ),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: Colors.grey[300]!,
-                        width: 1.5,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           )
         else
-          TextFormField(
-            controller: _internalController,
-            validator: widget.validator,
-            keyboardType: widget.keyboardType,
-            cursorColor: Colors.black,
-            obscureText: shouldShowPasswordToggle
-                ? _obscureText
-                : widget.obscureText,
-            maxLines: widget.maxLines,
-            minLines: widget.minLines,
-            enabled: widget.enabled,
-            onChanged: (value) {
-              widget.onChanged?.call(value);
-              _onTextChanged();
-            },
-            onTap: widget.onTap,
-            focusNode: _internalFocusNode,
-            textInputAction: widget.textInputAction,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            autofocus: widget.autofocus,
-            onTapOutside: (_) {
-              _onTextChanged();
-              _internalFocusNode.unfocus();
-            },
-            decoration: InputDecoration(
-              contentPadding:
-                  widget.contentPadding ??
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              prefixIcon: widget.prefix != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 12, right: 8),
-                      child: widget.prefix,
-                    )
-                  : null,
-              prefixIconConstraints: const BoxConstraints(
-                minWidth: 0,
-                minHeight: 0,
-              ),
-              suffixIcon: _buildSuffix(),
-              suffixIconConstraints: const BoxConstraints(
-                minWidth: 0,
-                minHeight: 0,
-              ),
-              filled: true,
-              fillColor: widget.enabled ? Colors.grey[50] : Colors.grey[200],
-              hintText: widget.hintText,
-              hintStyle: TextStyle(color: Colors.grey[500]),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: _isValid
-                      ? Colors.grey[300]!
-                      : Theme.of(context).colorScheme.error,
-                  width: 1.5,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: _isValid
-                      ? Colors.grey[300]!
-                      : Theme.of(context).colorScheme.error,
-                  width: 1.5,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: _isValid
-                      ? Colors.blue
-                      : Theme.of(context).colorScheme.error,
-                  width: 2.0,
-                ),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey[300]!, width: 1.5),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.error,
-                  width: 2.0,
-                ),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.error,
-                  width: 2.0,
-                ),
-              ),
-            ),
-          ),
+          _buildTextFormField(),
 
-        // Hint/Error text below
         if (_errorText != null ||
             (widget.hintText != null && _errorText == null))
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Error/help icon next to text
-                if (_errorText != null ||
-                    (widget.showHelpIcon && widget.helpText != null))
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4.0, top: 1.0),
-                    child: Icon(
-                      _errorText != null
-                          ? Icons.error_outline
-                          : Icons.help_outline,
-                      size: 14,
-                      color: _errorText != null
-                          ? Theme.of(context).colorScheme.error
-                          : Colors.grey[500],
-                    ),
-                  ),
-                Expanded(
-                  child: Text(
-                    _errorText ?? widget.hintText!,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: _errorText != null
-                          ? Theme.of(context).colorScheme.error
-                          : Colors.grey[600],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _buildHintOrError(),
       ],
     );
   }

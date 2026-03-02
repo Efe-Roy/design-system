@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'gb_semantic_tokens.dart';
-import 'gb_text_style.dart';
+import '../../core/common/constants/gb_semantic_tokens.dart';
+import '../../core/common/constants/gb_text_style.dart';
 
 //final SemanticColors colors = SemanticColors.light();
 ThemeData buildThemeData(SemanticColors colors, bool isDark) {

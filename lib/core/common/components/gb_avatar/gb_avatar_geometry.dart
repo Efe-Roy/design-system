@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:design_system/blocs/theme/gb_text_style.dart';
+import 'package:design_system/core/common/constants/gb_text_style.dart';
 import 'gb_avatar_types.dart';
 
 /// Holds all size-dependent configuration for an avatar
@@ -42,9 +42,11 @@ class GbAvatarSizeConfig {
 GbAvatarSizeConfig resolveAvatarSize(GbAvatarSize size) {
   switch (size) {
     case GbAvatarSize.xxs:
-      return const GbAvatarSizeConfig(
+      return GbAvatarSizeConfig(
         diameter: 18,
-        initialsTextStyle: GlobusTypography.textXxsSemiBold,
+        initialsTextStyle: GlobusTypography.textXxsSemiBold.copyWith(
+          fontSize: 8,
+        ),
         initialsPadding: EdgeInsets.symmetric(horizontal: 1),
         statusDotSize: 4,
         statusDotBorderWidth: 1,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:design_system/blocs/theme/gb_semantic_tokens.dart';
-import 'package:design_system/blocs/theme/gb_text_style.dart';
+import 'package:design_system/core/common/constants/gb_semantic_tokens.dart';
+import 'package:design_system/core/common/constants/gb_text_style.dart';
 
 import 'gb_input_types.dart';
 import 'gb_input_state.dart';
@@ -141,12 +141,19 @@ class GbInputTokens {
 
   static Color footerTextColor(
     BuildContext context,
-    GbInputVisualIntent intent,
-  ) {
+    GbInputVisualIntent intent, {
+    required bool destructive, // 👈 1. Add this parameter
+  }) {
     final colors = SemanticColors.of(context);
 
+    // Disabled state usually wins (gray text)
     if (intent == GbInputVisualIntent.disabled) {
       return colors.textSubtle;
+    }
+
+    // 👈 2. Check destructive state
+    if (destructive) {
+      return colors.textDanger; // This is your "Color/Text/text-danger"
     }
 
     return colors.textSubtle;
@@ -248,5 +255,109 @@ class GbInputTokens {
     }
 
     return Colors.transparent;
+  }
+
+  /* ------------------------------------------------------------------------
+   * PASSWORD ACTION (SHOW/HIDE)
+   * --------------------------------------------------------------------- */
+
+  static TextStyle passwordActionTextStyle() {
+    // User Requirement: Text sm/Semibold
+    return GlobusTypography.textSmSemiBold;
+  }
+
+  static Color passwordActionTextColor(
+    BuildContext context,
+    GbInputVisualIntent intent,
+  ) {
+    final colors = SemanticColors.of(context);
+
+    if (intent == GbInputVisualIntent.disabled) {
+      return colors.textDisabled;
+    }
+    return colors.textBold;
+  }
+
+  static Color passwordLeadingIconColor(BuildContext context, bool enabled) {
+    final colors = SemanticColors.of(context);
+
+    // Rule: "Color/Icon/icon-disabled" if disabled
+    if (!enabled) {
+      return colors.iconDisabled;
+    }
+
+    // Rule: "Color/Icon/icon" for ALL other states (Normal, Active, Error)
+    return colors.icon;
+  }
+
+  // ─────────────────────────────────────────────
+  // CLEAR BUTTON TOKENS
+  // ─────────────────────────────────────────────
+  static Color clearButtonColor(BuildContext context) {
+    // You specified: "its color in all states is Color/Icon/icon"
+    return SemanticColors.of(context).icon;
+  }
+
+  // ─────────────────────────────────────────────
+  // DROPDOWN TOKENS
+  // ─────────────────────────────────────────────
+
+  static Color dropdownTextColor(BuildContext context, bool enabled) {
+    final colors = SemanticColors.of(context);
+    // Disabled: Color/Text/text-subtle
+    // Normal:   Color/Text/text
+    return enabled ? colors.text : colors.textSubtle;
+  }
+
+  static Color dropdownArrowColor(BuildContext context, bool enabled) {
+    final colors = SemanticColors.of(context);
+    // Disabled: Color/Icon/icon-disabled
+    // Normal:   Color/Icon/icon
+    return enabled ? colors.icon : colors.iconDisabled;
+  }
+
+  static TextStyle dropdownTextStyle(GbInputSize size) {
+    // You specified: "Text md/Regular"
+    // Assuming GlobusTypography.textMdRegular exists or mapping to it:
+    return GlobusTypography.textMdRegular;
+  }
+
+  static Color prefixLeadingTextColor(
+    BuildContext context,
+    GbInputVisualIntent intent,
+  ) {
+    // Usually the same as the input text or slightly muted (e.g. gray-500)
+    // Adjust 'colors.text' to 'colors.textSecondary' if you want it lighter.
+    final colors = SemanticColors.of(context);
+    return colors.text;
+  }
+
+  // ───────── CHIP TOKENS ─────────
+
+  static Color chipBackgroundColor(
+    BuildContext context, {
+    required bool enabled,
+  }) {
+    final colors = SemanticColors.of(context);
+    // Note: The disabled state affects the FIELD background, but usually chips
+    // keep their own card color unless specified otherwise.
+    // Based on your note: "Background Color: Color/Background/background-card"
+    return colors.backgroundCard;
+  }
+
+  static Color chipBorderColor(BuildContext context) {
+    final colors = SemanticColors.of(context);
+    return colors.borderSubtle;
+  }
+
+  static TextStyle chipTextStyle(GbInputSize size) {
+    // Usually slightly smaller than input text, or the same.
+    // Assuming same size as input for now (14px/16px).
+    return inputTextStyle(size).copyWith(fontWeight: FontWeight.w400);
+  }
+
+  static Color chipTextColor(BuildContext context, {required bool enabled}) {
+    final colors = SemanticColors.of(context);
+    return enabled ? colors.text : colors.textDisabled;
   }
 }

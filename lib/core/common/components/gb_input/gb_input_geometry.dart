@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'gb_input_types.dart';
-import 'package:design_system/blocs/theme/gb_spacing.dart';
+import 'package:design_system/core/common/constants/gb_spacing.dart';
 
 /// Defines all size, spacing, and layout-related constants for GbInputField.
 ///
@@ -27,13 +27,13 @@ class GbInputGeometry {
   /// - primary: the main value / text area
   /// - secondary: prefix, copy button, +/- buttons, etc.
 
-  /// Whether an input kind renders multiple visual segments.
+  /// Whether an input type renders multiple visual segments.
   ///
   /// IMPORTANT:
   /// This refers only to **visually segmented** inputs
   /// (i.e. internal divider + separate bordered areas).
-  static bool isSegmented(GbInputType kind) {
-    switch (kind) {
+  static bool isSegmented(GbInputType type) {
+    switch (type) {
       case GbInputType.leadingText:
       case GbInputType.count:
         return true;
@@ -117,8 +117,8 @@ class GbInputGeometry {
   static const double helpIconSize = 16.0;
   static const double errorIconSize = 16.0;
 
-  static double leadingIconSize(GbInputType kind) {
-    switch (kind) {
+  static double leadingIconSize(GbInputType type) {
+    switch (type) {
       case GbInputType.iconLeading:
       case GbInputType.password:
         return 20.0;
@@ -227,7 +227,87 @@ class GbInputGeometry {
     }
   }
 
-  static const double passwordToggleSpacing = 4;
+  // ─────────────────────────────────────────────
+  // PASSWORD INPUT
+  // ─────────────────────────────────────────────
+
+  // Spacing between the Help/Error icon and the "SHOW" button
+  static const double passwordIconToTextSpacing = 8.0;
+
+  // The touch target width for the "SHOW" button.
+  // The text is centered within this space.
+  static const double passwordShowButtonWidth = 72.0;
+
+  // Spacing between the text input and the Help/Error icon
+  static const double passwordContentToIconSpacing = 8.0;
+
+  // static const double passwordToggleSpacing = 4;
+
+  // ─────────────────────────────────────────────
+  // PASSWORD ICON LEADING SPECIFIC
+  // ─────────────────────────────────────────────
+  static const double passwordLeadingIconSize = 20.0;
+  static const double passwordLeadingIconToTextSpacing = 8.0;
+
+  // ─────────────────────────────────────────────
+  // ICON LEADING / CLEAR BUTTON SPECIFIC
+  // ─────────────────────────────────────────────
+  static const double clearButtonSize = 11.67;
+  static const double helpToClearButtonSpacing = 22.12;
+  static const double textToTrailingIconSpacing =
+      8.0; // Shared with others usually, but defining specific here for clarity
+
+  // ─────────────────────────────────────────────
+  // LEADING DROPDOWN SPECIFIC
+  // ─────────────────────────────────────────────
+  static const double dropdownLeadingIconSize = 24.0; // Flag width/height
+  static const double dropdownArrowWidth = 5.0; // 5px width
+  static const double dropdownArrowHeight = 10.0; // 10px height
+
+  static const double dropdownIconToTextSpacing = 4.0;
+  static const double dropdownTextToArrowSpacing = 9.0;
+  static const double dropdownArrowToFieldSpacing = 16.0;
+
+  // ─────────────────────────────────────────────
+  // PAYMENT SPECIFIC
+  // ─────────────────────────────────────────────
+  static const double paymentIconWidth = 34.0;
+  static const double paymentIconHeight = 24.0;
+  static const double paymentIconToTextSpacing = 8.0;
+
+  // ───────── TRAILING DROPDOWN SPACING ─────────
+
+  /// Distance between the leading text ("$") and the input field
+  static const double trailingLeadingTextToFieldSpacing = 8.0;
+
+  /// Distance between the input field and the Help/Error icon
+  static const double trailingFieldToIconSpacing = 8.0;
+
+  /// Distance between the Help/Error icon and the Dropdown trigger ("USD")
+  static const double trailingIconToDropdownSpacing = 4.0;
+
+  // ───────── TAGS / CHIPS SPACING ─────────
+
+  static const double chipHeight = 24.0;
+  static const double chipBorderRadius = 4.0;
+
+  /// Padding inside the chip (Left/Right)
+  static const double chipPaddingHorizontal = 4.0;
+
+  /// Gap between chips
+  static const double chipGap = 6.0;
+
+  /// Size of the avatar inside the chip
+  static const double chipAvatarSize = 18.0;
+
+  /// Size of the close 'x' icon
+  static const double chipCloseIconSize = 5.83;
+
+  /// Space between avatar and text, or text and close icon
+  static const double chipContentSpacing = 4.0;
+
+  /// Vertical spacing for the Wrap widget to separate lines of chips
+  static const double chipRunSpacing = 6.0;
 
   /// Whether the content should be vertically centered by default.
   static const bool defaultVerticalCentering = true;

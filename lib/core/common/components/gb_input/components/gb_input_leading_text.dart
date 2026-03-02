@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'gb_input_geometry.dart';
-import 'gb_input_tokens.dart';
-import 'gb_input_types.dart';
-import 'gb_input_state.dart';
+import '../gb_input_geometry.dart';
+import '../gb_input_tokens.dart';
+import '../gb_input_types.dart';
+import '../gb_input_state.dart';
 
 class GbInputLeadingText extends StatefulWidget {
   const GbInputLeadingText({
@@ -17,11 +17,14 @@ class GbInputLeadingText extends StatefulWidget {
     required this.leadingText,
 
     this.label,
-    this.hintText,
+    this.placeholder,
     this.helperText,
     this.controller,
     this.focusNode,
     this.onChanged,
+
+    // ✅ 1. Added Smart Icon Parameter
+    this.statusIcon,
   });
 
   final GbInputSize size;
@@ -32,8 +35,11 @@ class GbInputLeadingText extends StatefulWidget {
   final String leadingText;
 
   final String? label;
-  final String? hintText;
+  final String? placeholder;
   final String? helperText;
+
+  // ✅ 2. Added Smart Icon Field
+  final Widget? statusIcon;
 
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -45,8 +51,7 @@ class GbInputLeadingText extends StatefulWidget {
 }
 
 class _GbInputLeadingTextState extends State<GbInputLeadingText> {
-  static const String _helpIconAsset = 'assets/icons/help.svg';
-  static const String _errorIconAsset = 'assets/icons/error.svg';
+  // 🗑️ DELETED: Old hardcoded icon assets
 
   late final FocusNode _focusNode;
   bool _hasValue = false;
@@ -55,12 +60,19 @@ class _GbInputLeadingTextState extends State<GbInputLeadingText> {
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
-    _focusNode.addListener(() => setState(() {}));
+    _focusNode.addListener(_handleFocusChange);
     _hasValue = widget.controller?.text.isNotEmpty ?? false;
+  }
+
+  void _handleFocusChange() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
     if (widget.focusNode == null) {
       _focusNode.dispose();
     }
@@ -69,10 +81,8 @@ class _GbInputLeadingTextState extends State<GbInputLeadingText> {
 
   @override
   Widget build(BuildContext context) {
-    // 1️⃣ Resolve visual intent
     final intent = GbInputStateResolver.toVisualIntent(
       state: widget.state,
-
       destructive: widget.destructive,
     );
 
@@ -166,38 +176,25 @@ class _GbInputLeadingTextState extends State<GbInputLeadingText> {
               decoration: InputDecoration(
                 isCollapsed: true,
                 border: InputBorder.none,
-                hintText: widget.hintText,
+                hintText: widget.placeholder,
                 hintStyle: hintStyle,
               ),
               onChanged: (v) {
-                setState(() => _hasValue = v.isNotEmpty);
+                if (mounted) {
+                  setState(() => _hasValue = v.isNotEmpty);
+                }
                 widget.onChanged?.call(v);
               },
             ),
           ),
 
-          if (!widget.destructive)
+          // ─── ✅ NEW: Smart Status Icon (Replaces Old Logic) ───
+          if (widget.statusIcon != null)
             Padding(
               padding: const EdgeInsets.only(
                 left: GbInputGeometry.contentToInfoIconSpacing,
               ),
-              child: GbInputTokens.svgIcon(
-                assetPath: _helpIconAsset,
-                size: GbInputGeometry.helpIconSize,
-                color: GbInputTokens.helpIconColor(context, intent),
-              ),
-            ),
-
-          if (widget.destructive)
-            Padding(
-              padding: const EdgeInsets.only(
-                left: GbInputGeometry.contentToInfoIconSpacing,
-              ),
-              child: GbInputTokens.svgIcon(
-                assetPath: _errorIconAsset,
-                size: GbInputGeometry.errorIconSize,
-                color: GbInputTokens.errorIconColor(context),
-              ),
+              child: widget.statusIcon!,
             ),
         ],
       ),
@@ -228,7 +225,11 @@ class _GbInputLeadingTextState extends State<GbInputLeadingText> {
           Text(
             widget.helperText!,
             style: GbInputTokens.helperTextStyle().copyWith(
-              color: GbInputTokens.footerTextColor(context, intent),
+              color: GbInputTokens.footerTextColor(
+                context,
+                intent,
+                destructive: widget.destructive,
+              ),
             ),
           ),
         ],

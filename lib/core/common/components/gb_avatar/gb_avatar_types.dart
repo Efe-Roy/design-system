@@ -2,7 +2,7 @@
 enum GbAvatarSize { xxs, xs, sm, md, lg, xl, xxl }
 
 /// What content the avatar displays
-enum GbAvatarContent { image, normal, initials }
+enum GbAvatarContent { image, initials, placeholder }
 
 /// Visual state (for future extensibility)
 enum GbAvatarState { defaultState, pressed }

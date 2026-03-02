@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:design_system/blocs/theme/gb_color_tokens.dart';
+import 'package:design_system/core/common/constants/gb_color_tokens.dart';
 
 class GlobusGradients {
   // ———— GRAY GRADIENTS ————

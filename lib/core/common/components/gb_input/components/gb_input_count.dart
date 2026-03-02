@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'gb_input_geometry.dart';
-import 'gb_input_tokens.dart';
-import 'gb_input_types.dart';
-import 'gb_input_state.dart';
+import '../gb_input_geometry.dart';
+import '../gb_input_tokens.dart';
+import '../gb_input_types.dart';
+import '../gb_input_state.dart';
 
 class GbInputCount extends StatefulWidget {
   const GbInputCount({
@@ -12,15 +12,17 @@ class GbInputCount extends StatefulWidget {
     required this.enabled,
     required this.destructive,
     required this.state,
-
     this.label,
-    this.hintText,
+    this.placeholder,
     this.helperText,
     this.controller,
     this.focusNode,
     this.onChanged,
     this.onIncrement,
     this.onDecrement,
+
+    // ✅ 1. Added Smart Icon Parameter
+    this.statusIcon,
   });
 
   final GbInputSize size;
@@ -29,8 +31,11 @@ class GbInputCount extends StatefulWidget {
   final GbInputState state;
 
   final String? label;
-  final String? hintText;
+  final String? placeholder;
   final String? helperText;
+
+  // ✅ 2. Added Smart Icon Field
+  final Widget? statusIcon;
 
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -44,8 +49,7 @@ class GbInputCount extends StatefulWidget {
 }
 
 class _GbInputCountState extends State<GbInputCount> {
-  static const String _helpIconAsset = 'assets/icons/help.svg';
-  static const String _errorIconAsset = 'assets/icons/error.svg';
+  // 🗑️ DELETED: Old hardcoded icon assets
 
   late final FocusNode _focusNode;
   bool _hasValue = false;
@@ -54,12 +58,19 @@ class _GbInputCountState extends State<GbInputCount> {
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
-    _focusNode.addListener(() => setState(() {}));
+    _focusNode.addListener(_handleFocusChange);
     _hasValue = widget.controller?.text.isNotEmpty ?? false;
+  }
+
+  void _handleFocusChange() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
     if (widget.focusNode == null) {
       _focusNode.dispose();
     }
@@ -85,7 +96,10 @@ class _GbInputCountState extends State<GbInputCount> {
     c.text = '$next';
     c.selection = TextSelection.collapsed(offset: c.text.length);
     widget.onChanged?.call(c.text);
-    setState(() => _hasValue = true);
+
+    if (mounted) {
+      setState(() => _hasValue = true);
+    }
   }
 
   void _handleDec() {
@@ -107,7 +121,10 @@ class _GbInputCountState extends State<GbInputCount> {
     c.text = '$next';
     c.selection = TextSelection.collapsed(offset: c.text.length);
     widget.onChanged?.call(c.text);
-    setState(() => _hasValue = true);
+
+    if (mounted) {
+      setState(() => _hasValue = true);
+    }
   }
 
   @override
@@ -136,14 +153,12 @@ class _GbInputCountState extends State<GbInputCount> {
     );
 
     final backgroundColor = GbInputTokens.backgroundColor(context, intent);
-
     final borderWidth = GbInputTokens.borderWidth(intent);
 
     final inputStyle = GbInputTokens.inputTextStyle(widget.size).copyWith(
       color: GbInputTokens.inputTextColor(
         context,
         enabled: effectiveEnabled,
-
         isnormal: false,
       ),
     );
@@ -152,7 +167,6 @@ class _GbInputCountState extends State<GbInputCount> {
       color: GbInputTokens.inputTextColor(
         context,
         enabled: effectiveEnabled,
-
         isnormal: !_hasValue,
       ),
     );
@@ -190,23 +204,26 @@ class _GbInputCountState extends State<GbInputCount> {
               decoration: InputDecoration(
                 isCollapsed: true,
                 border: InputBorder.none,
-                hintText: widget.hintText,
+                hintText: widget.placeholder,
                 hintStyle: hintStyle,
               ),
               onChanged: (v) {
-                setState(() => _hasValue = v.isNotEmpty);
+                if (mounted) {
+                  setState(() => _hasValue = v.isNotEmpty);
+                }
                 widget.onChanged?.call(v);
               },
             ),
           ),
 
-          GbInputTokens.svgIcon(
-            assetPath: widget.destructive ? _errorIconAsset : _helpIconAsset,
-            size: GbInputGeometry.helpIconSize,
-            color: widget.destructive
-                ? GbInputTokens.errorIconColor(context)
-                : GbInputTokens.helpIconColor(context, intent),
-          ),
+          // ─── ✅ NEW: Smart Status Icon (Replaces Old Logic) ───
+          if (widget.statusIcon != null)
+            Padding(
+              padding: const EdgeInsets.only(
+                left: GbInputGeometry.contentToInfoIconSpacing,
+              ),
+              child: widget.statusIcon!,
+            ),
         ],
       ),
     );
@@ -273,7 +290,11 @@ class _GbInputCountState extends State<GbInputCount> {
           Text(
             widget.helperText!,
             style: GbInputTokens.helperTextStyle().copyWith(
-              color: GbInputTokens.footerTextColor(context, intent),
+              color: GbInputTokens.footerTextColor(
+                context,
+                intent,
+                destructive: widget.destructive,
+              ),
             ),
           ),
         ],

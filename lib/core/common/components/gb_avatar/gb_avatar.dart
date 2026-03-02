@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'gb_avatar_types.dart';
-import 'gb_avatar_size.dart';
-import 'gb_avatar_colors.dart';
+import 'gb_avatar_geometry.dart';
+import 'gb_avatar_tokens.dart';
 import 'gb_avatar_badge_layout.dart';
-import 'package:design_system/blocs/theme/gb_semantic_tokens.dart';
+import 'package:design_system/core/common/constants/gb_semantic_tokens.dart';
 
 class GbAvatar extends StatelessWidget {
   final GbAvatarSize size;
   final GbAvatarState state;
   final GbAvatarColor color;
 
-  /// Content (exactly one required)
+  /// Content Options
   final ImageProvider? image;
   final String? initials;
-  final bool normal;
+
+  /// If true, forces the generic user icon.
+  final bool placeholder;
 
   /// Presence
   final GbAvatarStatus status;
@@ -24,7 +26,6 @@ class GbAvatar extends StatelessWidget {
   final GbAvatarBadge badge;
 
   /// Optional override for COMPANY badge only
-  /// If null → default company badge SVG is used
   final String? companyBadgeAsset;
 
   const GbAvatar({
@@ -34,27 +35,14 @@ class GbAvatar extends StatelessWidget {
     this.color = GbAvatarColor.gray,
     this.image,
     this.initials,
-    this.normal = false,
+    this.placeholder = false,
     this.status = GbAvatarStatus.none,
     this.badge = GbAvatarBadge.none,
     this.companyBadgeAsset,
   }) : assert(
-         // Exactly ONE content type
-         (image != null ? 1 : 0) +
-                 (initials != null ? 1 : 0) +
-                 (normal ? 1 : 0) ==
-             1,
-         'GbAvatar: Exactly one content type (image, initials, or normal) must be provided.',
-       ),
-       assert(
-         // Never stack overlay types
+         // Safety check: Status and Badge can't coexist
          status == GbAvatarStatus.none || badge == GbAvatarBadge.none,
          'GbAvatar: Status and badge cannot be shown at the same time.',
-       ),
-       assert(
-         // Verified badge only allowed for image avatars
-         badge != GbAvatarBadge.verified || image != null,
-         'GbAvatar: Verified badge is only allowed for image avatars.',
        );
 
   @override
@@ -68,10 +56,8 @@ class GbAvatar extends StatelessWidget {
       contrastBorder: false,
     );
 
-    /// Determine overlay type (GEOMETRY)
     final GbAvatarOverlayType? overlayType = _resolveOverlayType();
 
-    /// Resolve overlay layout if needed
     final GbAvatarOverlayLayout? overlayLayout = overlayType != null
         ? resolveAvatarOverlayLayout(avatarSize: size, overlay: overlayType)
         : null;
@@ -82,9 +68,7 @@ class GbAvatar extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // --------------------------------------------------------------
-          // Avatar base
-          // --------------------------------------------------------------
+          // Avatar Base
           ClipOval(
             clipBehavior: overlayLayout?.clipAvatar == true
                 ? Clip.hardEdge
@@ -94,7 +78,7 @@ class GbAvatar extends StatelessWidget {
               height: sizeConfig.diameter,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: image == null ? colorConfig.background : null,
+                color: colorConfig.background,
                 border: colorConfig.border != null
                     ? Border.all(color: colorConfig.border!)
                     : null,
@@ -104,9 +88,7 @@ class GbAvatar extends StatelessWidget {
             ),
           ),
 
-          // --------------------------------------------------------------
-          // Status dot (online / offline)
-          // --------------------------------------------------------------
+          // Status Dot
           if (overlayType == GbAvatarOverlayType.status &&
               overlayLayout != null)
             Positioned(
@@ -119,9 +101,7 @@ class GbAvatar extends StatelessWidget {
               ),
             ),
 
-          // --------------------------------------------------------------
-          // Badge (verified / company)
-          // --------------------------------------------------------------
+          // Badge
           if (overlayType == GbAvatarOverlayType.company ||
               overlayType == GbAvatarOverlayType.verified)
             Positioned(
@@ -134,36 +114,20 @@ class GbAvatar extends StatelessWidget {
     );
   }
 
-  // ===================================================================
-  // Overlay resolution
-  // ===================================================================
-
   GbAvatarOverlayType? _resolveOverlayType() {
-    if (status != GbAvatarStatus.none) {
-      return GbAvatarOverlayType.status;
-    }
-
-    if (badge == GbAvatarBadge.company) {
-      return GbAvatarOverlayType.company;
-    }
-
-    if (badge == GbAvatarBadge.verified) {
-      return GbAvatarOverlayType.verified;
-    }
-
+    if (status != GbAvatarStatus.none) return GbAvatarOverlayType.status;
+    if (badge == GbAvatarBadge.company) return GbAvatarOverlayType.company;
+    if (badge == GbAvatarBadge.verified) return GbAvatarOverlayType.verified;
     return null;
   }
 
-  // ===================================================================
-  // Avatar content
-  // ===================================================================
-
+  // 🧠 CONTENT BUILDER (Updated)
   Widget _buildAvatarContent(
     GbAvatarSizeConfig sizeConfig,
     GbAvatarColors colorConfig,
   ) {
-    // 1️⃣ normal wins
-    if (normal) {
+    // 1️⃣ Placeholder Wins (Matches Figma "Placeholder" state)
+    if (placeholder) {
       return Icon(
         Icons.person,
         size: sizeConfig.diameter * 0.5,
@@ -171,7 +135,7 @@ class GbAvatar extends StatelessWidget {
       );
     }
 
-    // 2️⃣ Image
+    // 2️⃣ Try Image
     if (image != null) {
       return ClipOval(
         child: Image(
@@ -179,35 +143,56 @@ class GbAvatar extends StatelessWidget {
           width: sizeConfig.diameter,
           height: sizeConfig.diameter,
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return _buildInitialsOrIcon(sizeConfig, colorConfig);
+          },
         ),
       );
     }
 
-    // 3️⃣ Initials
+    // 3️⃣ Fallback (Initials or Icon)
+    return _buildInitialsOrIcon(sizeConfig, colorConfig);
+  }
+
+  Widget _buildInitialsOrIcon(
+    GbAvatarSizeConfig sizeConfig,
+    GbAvatarColors colorConfig,
+  ) {
     if (initials != null && initials!.isNotEmpty) {
+      final String displayText = _processInitials(initials!);
+
       return Padding(
         padding: sizeConfig.initialsPadding,
         child: Center(
           child: Text(
-            initials!,
+            displayText,
             maxLines: 1,
             textAlign: TextAlign.center,
             overflow: TextOverflow.clip,
             style: sizeConfig.initialsTextStyle.copyWith(
               color: colorConfig.foreground,
-              height: 1, // locked & stable
+              height: 1,
             ),
           ),
         ),
       );
     }
 
-    return const SizedBox.shrink();
+    return Icon(
+      Icons.person,
+      size: sizeConfig.diameter * 0.5,
+      color: colorConfig.foreground,
+    );
   }
 
-  // ===================================================================
-  // Status dot
-  // ===================================================================
+  String _processInitials(String input) {
+    final text = input.trim();
+    if (text.isEmpty) return '';
+    if (text.length <= 2) return text.toUpperCase();
+    final parts = text.split(RegExp(r'\s+'));
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
 
   Widget _buildStatusDot({
     required double size,
@@ -224,10 +209,6 @@ class GbAvatar extends StatelessWidget {
       ),
     );
   }
-
-  // ===================================================================
-  // Badge (SVG)
-  // ===================================================================
 
   Widget _buildBadge({required GbAvatarBadge badge, required double size}) {
     final String assetPath = badge == GbAvatarBadge.verified

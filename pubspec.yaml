@@ -75,6 +75,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
+    - assets/icons/flags/
   fonts:
     - family: Sora
       fonts:

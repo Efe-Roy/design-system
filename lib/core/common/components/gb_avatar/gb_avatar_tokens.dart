@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:design_system/blocs/theme/gb_semantic_tokens.dart';
+import 'package:design_system/core/common/constants/gb_semantic_tokens.dart';
 import 'gb_avatar_types.dart';
 
 // Holds all color-related configuration for an avatar

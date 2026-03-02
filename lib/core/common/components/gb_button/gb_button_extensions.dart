@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:design_system/blocs/theme/gb_radius.dart';
+import 'package:design_system/core/common/constants/gb_radius.dart';
 import 'gb_button_types.dart';
 
 extension GbButtonHierarchyX on GbButtonHierarchy {

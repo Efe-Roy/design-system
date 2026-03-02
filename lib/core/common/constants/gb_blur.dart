@@ -2,6 +2,10 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class GlobusBlur {
+  static final ui.ImageFilter vsm = ui.ImageFilter.blur(
+    sigmaX: 2.0,
+    sigmaY: 2.0,
+  );
   static final ui.ImageFilter sm = ui.ImageFilter.blur(
     sigmaX: 8.0,
     sigmaY: 8.0,

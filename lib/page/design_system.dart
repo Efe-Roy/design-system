@@ -281,6 +281,105 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
                 ),
               ],
             ),
+
+            // Column(
+            //   children: [
+            //     GBTextField(
+            //       labelText: 'Country',
+            //       prefix: Icon(Icons.currency_bitcoin),
+            //       suffix: DropdownButton<String>(
+            //         value: 'USA',
+            //         items: ['USA', 'UK', 'CA', 'NG']
+            //             .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+            //             .toList(),
+            //         onChanged: (value) {},
+            //         underline: SizedBox(),
+            //         icon: Icon(Icons.arrow_drop_down, size: 20),
+            //       ),
+            //       controller: TextEditingController(),
+            //       // hintText: 'Select country and enter details',
+            //     ),
+
+            //     SizedBox(height: 16),
+
+            //     GBTextField(
+            //       labelText: 'Create Password',
+            //       hintText: 'At least 8 characters with letters and numbers',
+            //       prefix: Icon(Icons.lock),
+            //       controller: TextEditingController(),
+            //       isPasswordField: true,
+            //       showHelpIcon: true,
+            //       helpText:
+            //           'Use a strong password with mix of uppercase, lowercase, numbers, and symbols',
+            //       validator: (value) {
+            //         if (value == null || value.length < 8)
+            //           return 'Must be at least 8 characters';
+            //         if (!value.contains(RegExp(r'[A-Z]')))
+            //           return 'Include at least one uppercase letter';
+            //         if (!value.contains(RegExp(r'[a-z]')))
+            //           return 'Include at least one lowercase letter';
+            //         if (!value.contains(RegExp(r'[0-9]')))
+            //           return 'Include at least one number';
+            //         return null;
+            //       },
+            //     ),
+
+            //     SizedBox(height: 16),
+
+            //     GBTextField(
+            //       labelText: 'Phone Number',
+            //       // prefix: Icon(Icons.phone),
+            //       prefix: DropdownButton<String>(
+            //         value: '+234',
+            //         items: ['+234', '+44', '+33']
+            //             .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+            //             .toList(),
+            //         onChanged: (value) {},
+            //         underline: SizedBox(),
+            //       ),
+            //       showHelpIcon: true,
+            //       controller: TextEditingController(),
+            //     ),
+
+            //     SizedBox(height: 16),
+
+            //     GBTextField(
+            //       labelText: 'PIN Code',
+            //       hintText: 'Enter 4-digit PIN',
+            //       prefix: Icon(Icons.security),
+            //       controller: TextEditingController(),
+            //       obscureText: true, // This will also trigger visibility toggle
+            //       keyboardType: TextInputType.number,
+            //       validator: (value) {
+            //         if (value == null || value.length != 4)
+            //           return 'PIN must be 4 digits';
+            //         if (!RegExp(r'^[0-9]+$').hasMatch(value))
+            //           return 'PIN must contain only numbers';
+            //         return null;
+            //       },
+            //     ),
+
+            //     SizedBox(height: 16),
+
+            //     GBTextField(
+            //       labelText: 'Website',
+            //       hintText: 'Enter website',
+            //       prefix: Text('https://'),
+            //       controller: TextEditingController(),
+            //       keyboardType: TextInputType.url,
+            //       prefixOutsideBorder: true,
+            //       validator: (value) {
+            //         if (value == null || value.isEmpty)
+            //           return 'Website is required';
+            //         if (!RegExp(r'^[a-zA-Z0-9.-]+$').hasMatch(value))
+            //           return 'Website must contain only letters, numbers, dots, and hyphens';
+            //         return null;
+            //       },
+            //     ),
+
+            //     SizedBox(height: 46),
+            //   ],
+            // ),
           ],
         ),
       ),

@@ -581,7 +581,8 @@ class SemanticColors extends ThemeExtension<SemanticColors> {
 
       // Blanket-related properties
       blanket: ColorTokens.darkBlue200Opa40,
-      blanketSubtle: ColorTokens.darkBlue200Opa30,
+      // blanketSubtle: ColorTokens.darkBlue200Opa30,
+      blanketSubtle: ColorTokens.gray900Opa90,
       blanketSubtler: ColorTokens.darkBlue200Opa20,
 
       // Skeleton-related properties

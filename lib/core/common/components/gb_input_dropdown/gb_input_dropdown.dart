@@ -114,7 +114,7 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                       child: GlobusBlur.applyBlur(
                         blurFilter: isSuccessState
                             ? GlobusBlur.lg
-                            : GlobusBlur.vsm,
+                            : GlobusBlur.sm,
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 150),
                           color: isSuccessState
@@ -132,185 +132,194 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                   // 2. MODAL CONTENT BOX
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: SafeArea(
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          left: GbInputDropdownGeometry.modalPaddingOuter,
-                          right: GbInputDropdownGeometry.modalPaddingOuter,
-                          top: GbInputDropdownGeometry.modalPaddingOuter,
-                          bottom:
-                              GbInputDropdownGeometry.modalPaddingOuter +
-                              bottomInsets,
-                        ),
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(
-                          maxHeight: math.min(
-                            GbInputDropdownGeometry.modalAbsoluteMaxHeight,
-                            screenHeight * 0.9,
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          color:
-                              GbInputDropdownTokens.modalContentBackgroundColor(
-                                context,
-                              ),
-                          borderRadius: BorderRadius.circular(
-                            GbInputDropdownGeometry.modalBorderRadius,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Drag Handle
-                            Center(
-                              child: Container(
-                                width: GbInputDropdownGeometry.dragHandleWidth,
-                                height:
-                                    GbInputDropdownGeometry.dragHandleHeight,
-                                margin: const EdgeInsets.only(
-                                  top: GbInputDropdownGeometry
-                                      .dragHandleTopMargin,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: GbInputDropdownTokens.dragHandleColor(
-                                    context,
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                    GbInputDropdownGeometry.dragHandleHeight /
-                                        2,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-
-                            // Header Mother Container (Title & Search)
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: GbInputDropdownGeometry
-                                    .headerPaddingHorizontal,
-                                vertical: GbInputDropdownGeometry
-                                    .headerPaddingVertical,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (widget.modalTitle != null)
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: GbInputDropdownGeometry
-                                            .titleBottomPadding,
-                                      ),
-                                      child: Text(
-                                        widget.modalTitle!,
-                                        style:
-                                            GbInputDropdownTokens.modalTitleTextStyle(
-                                              context,
-                                            ),
-                                      ),
-                                    ),
-
-                                  if (widget.showSearch)
-                                    GbInputField(
-                                      type: GbInputType.iconLeading,
-                                      size: GbInputSize.sm,
-                                      state: GbInputState.normal,
-                                      placeholder: "Search",
-                                      leadingIcon: SvgPicture.asset(
-                                        'assets/icons/search.svg',
-                                        width: GbInputDropdownGeometry
-                                            .leadingIconSize,
-                                        height: GbInputDropdownGeometry
-                                            .leadingIconSize,
-                                        colorFilter: ColorFilter.mode(
-                                          GbInputDropdownTokens.iconColor(
-                                            context,
-                                            GbInputDropdownState.normal,
-                                          ),
-                                          BlendMode.srcIn,
-                                        ),
-                                      ),
-                                      onChanged: (query) {
-                                        setModalState(() {
-                                          if (query.isEmpty) {
-                                            modalFilteredItems = List.from(
-                                              widget.items,
-                                            );
-                                          } else {
-                                            modalFilteredItems = widget.items
-                                                .where((item) {
-                                                  return item.text
-                                                          .toLowerCase()
-                                                          .contains(
-                                                            query.toLowerCase(),
-                                                          ) ||
-                                                      (item.supportingText
-                                                              ?.toLowerCase()
-                                                              .contains(
-                                                                query
-                                                                    .toLowerCase(),
-                                                              ) ??
-                                                          false);
-                                                })
-                                                .toList();
-                                          }
-                                        });
-                                      },
-                                    ),
-                                ],
-                              ),
-                            ),
-
-                            // Scrollable Item List
-                            Flexible(
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                itemCount: modalFilteredItems.length,
-                                itemBuilder: (context, index) {
-                                  final item = modalFilteredItems[index];
-                                  // In success state, manually force the selected item to look active
-                                  final isSelected = isSuccessState
-                                      ? (item.value == widget.value)
-                                      : (item.value == widget.value);
-
-                                  return GbInputDropdownMenuItem<T>(
-                                    item: item,
-                                    isSelected: isSelected,
-                                    type: widget.type,
-                                    onTap: () async {
-                                      // 1. Trigger the Success Flash
-                                      setModalState(() {
-                                        isSuccessState = true;
-                                        // Update the local selection purely for visual feedback during the flash
-                                        widget.onChanged?.call(item.value);
-                                      });
-
-                                      // 2. Wait a split second to display the heavier blur and dark overlay
-                                      await Future.delayed(
-                                        const Duration(milliseconds: 300),
-                                      );
-
-                                      // 3. Close Modal
-                                      if (mounted) {
-                                        // ignore: use_build_context_synchronously
-                                        if (Navigator.canPop(context)) {
-                                          // ignore: use_build_context_synchronously
-                                          Navigator.pop(context);
-                                        }
-                                      }
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        left: GbInputDropdownGeometry.modalPaddingOuter,
+                        right: GbInputDropdownGeometry.modalPaddingOuter,
+                        top: GbInputDropdownGeometry.modalPaddingOuter,
+                        bottom: 24,
+                        // GbInputDropdownGeometry.modalPaddingOuter +
+                        // bottomInsets,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        maxHeight: math.min(
+                          GbInputDropdownGeometry.modalAbsoluteMaxHeight,
+                          screenHeight * 0.9,
                         ),
                       ),
+                      decoration: BoxDecoration(
+                        color:
+                            GbInputDropdownTokens.modalContentBackgroundColor(
+                              context,
+                            ),
+                        borderRadius: BorderRadius.circular(
+                          GbInputDropdownGeometry.modalBorderRadius,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Drag Handle
+                          Center(
+                            child: Container(
+                              width: GbInputDropdownGeometry.dragHandleWidth,
+                              height: GbInputDropdownGeometry.dragHandleHeight,
+                              margin: const EdgeInsets.only(
+                                top:
+                                    GbInputDropdownGeometry.dragHandleTopMargin,
+                              ),
+                              decoration: BoxDecoration(
+                                color: GbInputDropdownTokens.dragHandleColor(
+                                  context,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  GbInputDropdownGeometry.dragHandleHeight / 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+
+                          // Header Mother Container (Title & Search)
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: GbInputDropdownGeometry
+                                  .headerPaddingHorizontal,
+                              vertical:
+                                  GbInputDropdownGeometry.headerPaddingVertical,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (widget.modalTitle != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: GbInputDropdownGeometry
+                                          .titleBottomPadding,
+                                    ),
+                                    child: Text(
+                                      widget.modalTitle!,
+                                      style:
+                                          GbInputDropdownTokens.modalTitleTextStyle(
+                                            context,
+                                          ),
+                                    ),
+                                  ),
+
+                                if (widget.showSearch)
+                                  GbInputField(
+                                    type: GbInputType.iconLeading,
+                                    size: GbInputSize.sm,
+                                    state: GbInputState.normal,
+                                    placeholder: "Search",
+                                    leadingIcon: SvgPicture.asset(
+                                      'assets/icons/search.svg',
+                                      width: GbInputDropdownGeometry
+                                          .leadingIconSize,
+                                      height: GbInputDropdownGeometry
+                                          .leadingIconSize,
+                                      colorFilter: ColorFilter.mode(
+                                        GbInputDropdownTokens.iconColor(
+                                          context,
+                                          GbInputDropdownState.normal,
+                                        ),
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                    onChanged: (query) {
+                                      setModalState(() {
+                                        if (query.isEmpty) {
+                                          modalFilteredItems = List.from(
+                                            widget.items,
+                                          );
+                                        } else {
+                                          modalFilteredItems = widget.items
+                                              .where((item) {
+                                                return item.text
+                                                        .toLowerCase()
+                                                        .contains(
+                                                          query.toLowerCase(),
+                                                        ) ||
+                                                    (item.supportingText
+                                                            ?.toLowerCase()
+                                                            .contains(
+                                                              query
+                                                                  .toLowerCase(),
+                                                            ) ??
+                                                        false);
+                                              })
+                                              .toList();
+                                        }
+                                      });
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ),
+
+                          // Scrollable Item List
+                          Flexible(
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              itemCount: modalFilteredItems.length,
+                              itemBuilder: (context, index) {
+                                final item = modalFilteredItems[index];
+                                // In success state, manually force the selected item to look active
+                                final isSelected = isSuccessState
+                                    ? (item.value == widget.value)
+                                    : (item.value == widget.value);
+
+                                return GbInputDropdownMenuItem<T>(
+                                  item: item,
+                                  isSelected: isSelected,
+                                  type: widget.type,
+                                  onTap: () async {
+                                    // 1. Trigger the Success Flash
+                                    setModalState(() {
+                                      isSuccessState = true;
+                                      // Update the local selection purely for visual feedback during the flash
+                                      widget.onChanged?.call(item.value);
+                                    });
+
+                                    // 2. Wait a split second to display the heavier blur and dark overlay
+                                    await Future.delayed(
+                                      const Duration(milliseconds: 300),
+                                    );
+
+                                    // 3. Close Modal
+                                    if (mounted) {
+                                      // ignore: use_build_context_synchronously
+                                      if (Navigator.canPop(context)) {
+                                        // ignore: use_build_context_synchronously
+                                        Navigator.pop(context);
+                                      }
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    // child: SafeArea(
+                    // ),
                   ),
+
+                  // // 3. COVER BOTTOM HOME INDICATOR ✅
+                  // Positioned(
+                  //   bottom: 0,
+                  //   left: 0,
+                  //   right: 0,
+                  //   child: Container(
+                  //     height: MediaQuery.of(context).padding.bottom + 40,
+                  //     color: Colors.black12,
+                  //   ),
+                  // ),
                 ],
               ),
             );
@@ -402,11 +411,20 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
             ],
 
             const SizedBox(width: GbInputDropdownGeometry.trailingIconGap),
-            SvgPicture.asset(
-              'assets/icons/dropdown_icon.svg',
-              width: GbInputDropdownGeometry.chevronSize,
-              height: GbInputDropdownGeometry.chevronSize,
-              colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+
+            Container(
+              // decoration: BoxDecoration(
+              //   // shape: BoxShape.circle,
+              //   // color: colorConfig.background,
+              //   border: Border.all(color: Colors.red),
+              // ),
+              child: SvgPicture.asset(
+                'assets/icons/dropdown_icon.svg',
+                // width: GbInputDropdownGeometry.chevronSize,
+                // height: GbInputDropdownGeometry.chevronSize,
+                colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+                // fit: BoxFit.contain,
+              ),
             ),
           ],
         ),

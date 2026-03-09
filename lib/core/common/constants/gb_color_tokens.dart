@@ -55,6 +55,7 @@ class ColorTokens {
   static const Color gray25Opa20 = Color(0x33F9FAFB);
   static const Color gray25Opa0 = Color(0x00F9FAFB);
   static const Color gray900Opa50 = Color(0x80121926);
+  static const Color gray900Opa90 = Color.fromARGB(240, 18, 25, 38);
   static const Color gray900Opa20 = Color(0x33121926);
   static const Color gray900Opa0 = Color(0x00121926);
   static const Color gray950Opa50 = Color(0x800D121C);

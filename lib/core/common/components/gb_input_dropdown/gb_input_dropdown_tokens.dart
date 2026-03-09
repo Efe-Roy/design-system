@@ -75,8 +75,10 @@ class GbInputDropdownTokens {
       .copyWith(color: SemanticColors.of(context).textBold);
 
   // Dynamic Overlay states
+  // static Color modalBarrierColorBefore(BuildContext context) =>
+  //     SemanticColors.of(context).blanketSubtle;
   static Color modalBarrierColorBefore(BuildContext context) =>
-      SemanticColors.of(context).blanketSubtler;
+      const Color.fromARGB(255, 1, 15, 37).withValues(alpha: 0.8);
   static Color modalBarrierColorAfter(BuildContext context) =>
       SemanticColors.of(context).blanketSubtle;
 

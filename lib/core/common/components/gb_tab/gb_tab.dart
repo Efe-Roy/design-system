@@ -16,8 +16,8 @@ class GbTab extends StatefulWidget {
     this.badgeLabels,
     this.type = GbTabType.underline,
     this.size = GbTabSize.md,
-    this.fullWidth = false, // Merged 50/50 split (Login style)
-    this.fillWidth = false, // Spaced equal split (Segmented style)
+    this.fullWidth = false,
+    this.fillWidth = false,
     this.padding = EdgeInsets.zero,
   });
 
@@ -28,7 +28,7 @@ class GbTab extends StatefulWidget {
   final GbTabType type;
   final GbTabSize size;
   final bool fullWidth;
-  final bool fillWidth; // 👈 NEW
+  final bool fillWidth;
   final EdgeInsets padding;
 
   @override
@@ -113,14 +113,13 @@ class _GbTabState extends State<GbTab> {
         type: widget.type,
         size: widget.size,
         current: index == widget.selectedIndex,
-        fullWidth:
-            widget.fullWidth ||
-            widget.fillWidth, // Both modes need the item to expand internally
+        fullWidth: widget.fullWidth || widget.fillWidth,
         onTap: () => widget.onTabChanged(index),
       );
 
       if (widget.fullWidth) {
-        return item; // Returns Expanded
+        // 🧠 THE BUG FIX: Actually wraps the item in an Expanded widget so it shares the screen!
+        return Expanded(child: item);
       } else if (widget.fillWidth) {
         return Expanded(
           child: Padding(
@@ -133,7 +132,7 @@ class _GbTabState extends State<GbTab> {
               type: widget.type,
               size: widget.size,
               current: index == widget.selectedIndex,
-              fullWidth: true, // Tell item to center/fill its container
+              fullWidth: true,
               onTap: () => widget.onTabChanged(index),
             ),
           ),
@@ -150,12 +149,9 @@ class _GbTabState extends State<GbTab> {
 
     Widget content;
 
-    // IF FILL OR FULL -> Use ROW (Non-scrollable, fills space)
+    // IF FILL OR FULL -> Use ROW (Non-scrollable, Equal Width. This is best suitable for 3 or fewer tabs)
     if (widget.fullWidth || widget.fillWidth) {
-      content = Row(
-        mainAxisSize: MainAxisSize.max, // Force full width
-        children: tabWidgets,
-      );
+      content = Row(mainAxisSize: MainAxisSize.max, children: tabWidgets);
     }
     // ELSE -> Use SCROLL VIEW
     else {
@@ -268,11 +264,8 @@ class _GbTabItem extends StatelessWidget {
     }
 
     // 3. TYPOGRAPHY: Smart Scaling
-    // 📱 Mobile Fix: If we are squeezing multiple tabs into the screen,
-    // force the text size to 'Small' (14px) so words like "Password" don't truncate.
-    final GbTabSize effectiveSize = fullWidth ? GbTabSize.sm : size;
     final TextStyle geometryTextStyle = GbTabGeometry.textStyle(
-      effectiveSize,
+      size, // 👈 Directly uses the requested size now!
       current,
     );
     final TextStyle finalTextStyle = geometryTextStyle.copyWith(
@@ -308,7 +301,6 @@ class _GbTabItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // 📱 Mobile Fix: Graceful truncation if the text is STILL too long for the screen
           Flexible(
             child: Text(
               label,

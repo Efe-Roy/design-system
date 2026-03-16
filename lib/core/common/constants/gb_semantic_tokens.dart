@@ -414,7 +414,9 @@ class SemanticColors extends ThemeExtension<SemanticColors> {
   }
 
   factory SemanticColors.light() {
-    return const SemanticColors(
+    // 🧠 FIX: Removed the 'const' keyword here. Since colors use .withValues() at runtime,
+    // we return a standard object instead of a compile-time constant.
+    return SemanticColors(
       colorBgSurface: Colors.white,
       colorBgElevated: ColorTokens.gray50,
       colorTextPrimary: ColorTokens.gray900,
@@ -580,9 +582,9 @@ class SemanticColors extends ThemeExtension<SemanticColors> {
       backgroundPinkSubtlest: ColorTokens.pink50,
 
       // Blanket-related properties
-      blanket: ColorTokens.darkBlue200Opa40,
-      blanketSubtle: ColorTokens.darkBlue200Opa30,
-      blanketSubtler: ColorTokens.darkBlue200Opa20,
+      blanket: ColorTokens.darkBlue500Opa40,
+      blanketSubtle: ColorTokens.darkBlue500Opa30,
+      blanketSubtler: ColorTokens.darkBlue500Opa20,
 
       // Skeleton-related properties
       skeleton: ColorTokens.gray200,
@@ -604,7 +606,8 @@ class SemanticColors extends ThemeExtension<SemanticColors> {
   }
 
   factory SemanticColors.dark() {
-    return const SemanticColors(
+    // 🧠 FIX: Removed the 'const' keyword here as well for the dark theme!
+    return SemanticColors(
       colorBgSurface: ColorTokens.gray900,
       colorBgElevated: ColorTokens.gray800,
       colorTextPrimary: Colors.white,
@@ -806,7 +809,6 @@ class SemanticColors extends ThemeExtension<SemanticColors> {
       border: border ?? this.border,
       icon: icon ?? this.icon,
 
-      // 🔒 everything else is copied as-is
       colorBgSurface: colorBgSurface,
       colorBgElevated: colorBgElevated,
       colorTextPrimary: colorTextPrimary,

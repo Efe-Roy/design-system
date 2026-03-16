@@ -19,7 +19,7 @@ class GbTooltip extends StatelessWidget {
     super.key,
     required this.label,
     this.supportingText,
-    this.arrow = Arrow.bottomCenter,
+    this.arrow = Arrow.topCenter,
   });
 
   final String label;

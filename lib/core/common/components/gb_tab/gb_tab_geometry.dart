@@ -27,7 +27,7 @@ class GbTabGeometry {
 
   static const double gapTextToBadge = 8.0;
   static const double badgeHeight = 24.0;
-  static const double listGap = 8.0;
+  static const double listGap = 0.0;
   static const double activeBorderWidth = 2.0;
 
   // ────────────────────────────────────────────

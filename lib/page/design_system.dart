@@ -1,11 +1,9 @@
+import 'package:design_system/core/common/components/gb_tab/gb_tab.dart';
+import 'package:design_system/core/common/components/gb_tooltip/gb_tooltip.dart';
+import 'package:design_system/core/common/constants/gb_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:design_system/core/common/constants/gb_text_style.dart';
 import 'package:design_system/blocs/theme/gb_theme_cubit.dart';
-import 'package:design_system/core/common/components/gb_input_dropdown/gb_input_dropdown.dart';
-import 'package:design_system/core/common/components/gb_input_dropdown/gb_input_dropdown_types.dart';
-import 'package:design_system/core/common/components/gb_avatar/gb_avatar.dart';
-import 'package:design_system/core/common/components/gb_avatar/gb_avatar_types.dart';
 
 class DesignSystemPage extends StatefulWidget {
   const DesignSystemPage({super.key});
@@ -15,127 +13,12 @@ class DesignSystemPage extends StatefulWidget {
 }
 
 class _DesignSystemPageState extends State<DesignSystemPage> {
-  //  STATE
-  String? _selectedSimple;
-  String? _selectedCountry;
-  String? _selectedIcon;
-  String? _selectedAvatar;
-  String? _selectedDot;
-
-  //  MOCK DATA 1: Simple
-  final List<GbInputDropdownItem<String>> _simpleItems = [
-    const GbInputDropdownItem(
-      value: 'daily',
-      text: 'Daily Standup',
-      supportingText: '10:00 AM',
-    ),
-    const GbInputDropdownItem(
-      value: 'review',
-      text: 'Design Review',
-      supportingText: '2:00 PM',
-    ),
-    const GbInputDropdownItem(value: 'retro', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro1', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro2', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro3', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro4', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro5', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro6', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro7', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro8', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro9', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro10', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro11', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro12', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro13', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro14', text: 'Sprint Retrospective'),
-    const GbInputDropdownItem(value: 'retro15', text: 'Sprint Retrospective'),
-  ];
-
-  //  MOCK DATA 2: Normal (With Country Flags) 🆕
-  final List<GbInputDropdownItem<String>> _countryItems = [
-    const GbInputDropdownItem(value: 'ng', text: 'Nigeria', countryCode: 'NG'),
-    const GbInputDropdownItem(
-      value: 'ng',
-      text: 'United States',
-      countryCode: 'NG',
-    ),
-    const GbInputDropdownItem(
-      value: 'ng',
-      text: 'United Kingdom',
-      countryCode: 'NG',
-    ),
-    const GbInputDropdownItem(value: 'global', text: 'Global (No Flag)'),
-  ];
-
-  //  MOCK DATA 3: Icon Leading
-  final List<GbInputDropdownItem<String>> _iconItems = [
-    const GbInputDropdownItem(
-      value: 'work',
-      text: 'Work',
-      leading: Icon(Icons.work_outline),
-    ),
-    const GbInputDropdownItem(
-      value: 'home',
-      text: 'Home',
-      leading: Icon(Icons.home_outlined),
-    ),
-    const GbInputDropdownItem(
-      value: 'travel',
-      text: 'Travel',
-      leading: Icon(Icons.flight),
-    ), // Added icon back in
-  ];
-
-  //  MOCK DATA 4: Avatars
-  final List<GbInputDropdownItem<String>> _avatarItems = [
-    const GbInputDropdownItem(
-      value: 'olivia',
-      text: 'Olivia Rhye',
-      supportingText: '@olivia',
-      leading: GbAvatar(
-        size: GbAvatarSize.xs,
-        image: NetworkImage('https://i.pravatar.cc/150?u=olivia'),
-        initials: 'OR',
-      ),
-    ),
-    const GbInputDropdownItem(
-      value: 'phoenix',
-      text: 'Phoenix Baker',
-      supportingText: '@phoenix',
-      leading: GbAvatar(size: GbAvatarSize.xs, initials: 'PB'),
-    ),
-    const GbInputDropdownItem(
-      value: 'guest',
-      text: 'Guest User',
-      supportingText: '(No Account)',
-      leading: GbAvatar(size: GbAvatarSize.xs, placeholder: true),
-    ),
-  ];
-
-  //  MOCK DATA 5: Dot Leading (Status)
-  final List<GbInputDropdownItem<String>> _dotItems = [
-    const GbInputDropdownItem(
-      value: 'online',
-      text: 'Online',
-      dotColor: Colors.green,
-    ),
-    const GbInputDropdownItem(
-      value: 'busy',
-      text: 'Busy',
-      dotColor: Colors.red,
-    ),
-    const GbInputDropdownItem(
-      value: 'away',
-      text: 'Away',
-      dotColor: Colors.amber,
-    ),
-    const GbInputDropdownItem(
-      value: 'offline',
-      text: 'Offline',
-      dotColor: Colors.grey,
-    ),
-  ];
+  // State variables for the tab test cases
+  int _standardTabIndex = 0;
+  int _underlineTabIndex = 0;
+  int _scrollableTabIndex = 0;
+  int _whiteBorderTabIndex = 0;
+  int _whiteRoundedTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -143,10 +26,11 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
     final colors = themeState.colors;
 
     return Scaffold(
-      backgroundColor: colors.surface,
+      backgroundColor: colors.surfaceBold,
       appBar: AppBar(
-        title: const Text("Dropdown Component Audit"),
-        backgroundColor: colors.backgroundDarkBlue,
+        title: Text("Design System Audit", style: GlobusTypography.textLgBold),
+        backgroundColor: colors.surfaceBold,
+        elevation: 0,
         iconTheme: IconThemeData(color: colors.text),
       ),
       body: SingleChildScrollView(
@@ -154,232 +38,191 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ============================================================
-            //  TEST 1: Normal Type (Text Only)
-            // ============================================================
-            const _Header("1. Normal Type (Text Only)"),
-            GbInputDropdown<String>(
-              items: _simpleItems,
-              value: _selectedSimple,
-              label: "Meeting Type",
-              hintText: "Standard dropdown without search",
-              placeholder: "Select meeting",
-              modalTitle: "Select Meeting",
-              type: GbInputDropdownType.normal,
-              size: GbInputDropdownSize.md,
-              onChanged: (value) => setState(() => _selectedSimple = value),
+            // ─────────────────────────────────────────────────────────────
+            // 🧪 TABS SECTION
+            // ─────────────────────────────────────────────────────────────
+            _Header("1. Standard Buttons (Primary/Gray)"),
+            GbTab(
+              labels: const [
+                "Primary",
+                "Gray",
+                "Disabled",
+                // "With Badge",
+                // "Long Label",
+              ],
+              fillWidth: true,
+              type: GbTabType.buttonPrimary,
+              selectedIndex: _standardTabIndex,
+              onTabChanged: (index) =>
+                  setState(() => _standardTabIndex = index),
             ),
+
             const SizedBox(height: 32),
 
-            // ============================================================
-            //  TEST 2: Normal Type (With Country Flags) 🆕
-            // ============================================================
-            const _Header("2. Normal Type (Country Flags)"),
-            GbInputDropdown<String>(
-              items: _countryItems,
-              value: _selectedCountry,
-              label: "Country",
-              placeholder: "Select country",
-              modalTitle: "Select Country",
-              showSearch: true,
-              type: GbInputDropdownType.normal,
-              size: GbInputDropdownSize.md,
-              onChanged: (value) => setState(() => _selectedCountry = value),
+            _Header("2. Underline Tabs (Track Line Check)"),
+            GbTab(
+              labels: const ["My Details", "Profile", "Password", "Team"],
+              type: GbTabType.underline,
+              selectedIndex: _underlineTabIndex,
+              onTabChanged: (index) =>
+                  setState(() => _underlineTabIndex = index),
             ),
+
             const SizedBox(height: 32),
 
-            // ============================================================
-            //  TEST 3: Icon Leading
-            // ============================================================
-            const _Header("3. Icon Leading"),
-            GbInputDropdown<String>(
-              items: _iconItems,
-              value: _selectedIcon,
-              label: "Location",
-              placeholder: "Select location",
-              modalTitle: "Choose Location",
-              type: GbInputDropdownType.iconLeading,
-              size: GbInputDropdownSize.md,
-              onChanged: (value) => setState(() => _selectedIcon = value),
+            _Header("3. Scrollable + Smart Badges"),
+            GbTab(
+              labels: const [
+                "Profile",
+                "Profile",
+                "Settings",
+                "Logs",
+                "Audit",
+                "Profile",
+              ],
+              type: GbTabType.underlineFilled,
+              selectedIndex: _scrollableTabIndex,
+              onTabChanged: (index) =>
+                  setState(() => _scrollableTabIndex = index),
+              badgeLabels: const ["2", "5", null, null, "New", null],
             ),
+
             const SizedBox(height: 32),
 
-            // ============================================================
-            //  TEST 4: Avatar Leading (With Search)
-            // ============================================================
-            const _Header("4. Avatar Leading (Image/Initials/Placeholder)"),
-            GbInputDropdown<String>(
-              items: _avatarItems,
-              value: _selectedAvatar,
-              label: "Team Member",
-              placeholder: "Select member",
-              modalTitle: "Assign Member",
-              showSearch: true,
-              type: GbInputDropdownType.avatarLeading,
-              size: GbInputDropdownSize.md,
-              toolTip: "Select a user to see their avatar.",
-              onChanged: (value) => setState(() => _selectedAvatar = value),
+            _Header("4. Button White Border (Rectangular)"),
+            GbTab(
+              fillWidth: false,
+              labels: const [
+                "Profile",
+                "Password",
+                "Profile",
+                "Team",
+                "Settings",
+              ],
+              size: GbTabSize.md,
+              type: GbTabType.buttonWhiteBorder,
+              selectedIndex: _whiteBorderTabIndex,
+              onTabChanged: (index) =>
+                  setState(() => _whiteBorderTabIndex = index),
             ),
-            const SizedBox(height: 32),
 
-            // ============================================================
-            //  TEST 5: Dot Leading (Status)
-            // ============================================================
-            const _Header("5. Dot Leading (Status)"),
-            GbInputDropdown<String>(
-              items: _dotItems,
-              value: _selectedDot,
-              label: "User Status",
-              placeholder: "Select status",
-              modalTitle: "Set Status",
-              type: GbInputDropdownType.dotLeading,
-              size: GbInputDropdownSize.md,
-              onChanged: (value) => setState(() => _selectedDot = value),
-            ),
-            const SizedBox(height: 32),
-
-            // ============================================================
-            //  TEST 6: Disabled State
-            // ============================================================
-            const _Header("6. Disabled State"),
-            GbInputDropdown<String>(
-              items: _simpleItems,
-              value: null,
-              label: "Disabled Dropdown",
-              placeholder: "Cannot select",
-              enabled: false,
-              type: GbInputDropdownType.normal,
-              size: GbInputDropdownSize.md,
+            _Header("5. Button White Rounded (Pill)"),
+            GbTab(
+              labels: const [
+                "My Details",
+                "Profile",
+                // "Password",
+                // "Team",
+                // "Settings",
+              ],
+              fillWidth: true,
+              size: GbTabSize.md,
+              type: GbTabType.roundedButtonWhiteBorder,
+              selectedIndex: _whiteRoundedTabIndex,
+              onTabChanged: (index) =>
+                  setState(() => _whiteRoundedTabIndex = index),
             ),
 
             const SizedBox(height: 40),
+            Divider(color: colors.borderSubtler),
+            const SizedBox(height: 20),
 
-            // Theme Switcher...
-            const _Header("Theme Settings"),
-            Row(
-              children: [
-                Icon(Icons.brightness_6, color: colors.colorAccent),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Dark Mode', style: GlobusTypography.textMdBold),
-                      Text(
-                        'Toggle application theme',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: colors.colorTextSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Switch(
-                  value: themeState.isDark,
-                  onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
-                ),
-              ],
+            // ─────────────────────────────────────────────────────────────
+            // 🧪 TOOLTIP SECTION (NEW)
+            // ─────────────────────────────────────────────────────────────
+            _Header("6. Tooltips (Visual Check)"),
+
+            // A. Label Only
+            const Text(
+              "Label Only (Bottom Center Arrow):",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 12),
+            const Center(
+              child: GbTooltip(
+                label: "This is a tooltip",
+                arrow: Arrow.bottomLeft,
+              ),
             ),
 
-            // Column(
-            //   children: [
-            //     GBTextField(
-            //       labelText: 'Country',
-            //       prefix: Icon(Icons.currency_bitcoin),
-            //       suffix: DropdownButton<String>(
-            //         value: 'USA',
-            //         items: ['USA', 'UK', 'CA', 'NG']
-            //             .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-            //             .toList(),
-            //         onChanged: (value) {},
-            //         underline: SizedBox(),
-            //         icon: Icon(Icons.arrow_drop_down, size: 20),
-            //       ),
-            //       controller: TextEditingController(),
-            //       // hintText: 'Select country and enter details',
-            //     ),
+            const SizedBox(height: 32),
 
-            //     SizedBox(height: 16),
+            // B. Label + Supporting Text
+            const Text(
+              "With Supporting Text (Top Center Arrow):",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 12),
+            const Center(
+              child: GbTooltip(
+                label: "This is a tooltip",
+                supportingText:
+                    "Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning.",
+                arrow: Arrow.topCenter,
+              ),
+            ),
 
-            //     GBTextField(
-            //       labelText: 'Create Password',
-            //       hintText: 'At least 8 characters with letters and numbers',
-            //       prefix: Icon(Icons.lock),
-            //       controller: TextEditingController(),
-            //       isPasswordField: true,
-            //       showHelpIcon: true,
-            //       helpText:
-            //           'Use a strong password with mix of uppercase, lowercase, numbers, and symbols',
-            //       validator: (value) {
-            //         if (value == null || value.length < 8)
-            //           return 'Must be at least 8 characters';
-            //         if (!value.contains(RegExp(r'[A-Z]')))
-            //           return 'Include at least one uppercase letter';
-            //         if (!value.contains(RegExp(r'[a-z]')))
-            //           return 'Include at least one lowercase letter';
-            //         if (!value.contains(RegExp(r'[0-9]')))
-            //           return 'Include at least one number';
-            //         return null;
-            //       },
-            //     ),
+            const SizedBox(height: 32),
 
-            //     SizedBox(height: 16),
+            // C. Different Arrows
+            const Text(
+              "Arrow Variations:",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            Wrap(
+              spacing: 16,
+              runSpacing: 24,
+              alignment: WrapAlignment.center,
+              children: const [
+                GbTooltip(label: "Left Arrow", arrow: Arrow.left),
+                GbTooltip(label: "Right Arrow", arrow: Arrow.right),
+                GbTooltip(label: "Btm Left", arrow: Arrow.bottomLeft),
+                GbTooltip(label: "Btm Right", arrow: Arrow.bottomRight),
+              ],
+            ),
+            const SizedBox(height: 40),
 
-            //     GBTextField(
-            //       labelText: 'Phone Number',
-            //       // prefix: Icon(Icons.phone),
-            //       prefix: DropdownButton<String>(
-            //         value: '+234',
-            //         items: ['+234', '+44', '+33']
-            //             .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-            //             .toList(),
-            //         onChanged: (value) {},
-            //         underline: SizedBox(),
-            //       ),
-            //       showHelpIcon: true,
-            //       controller: TextEditingController(),
-            //     ),
-
-            //     SizedBox(height: 16),
-
-            //     GBTextField(
-            //       labelText: 'PIN Code',
-            //       hintText: 'Enter 4-digit PIN',
-            //       prefix: Icon(Icons.security),
-            //       controller: TextEditingController(),
-            //       obscureText: true, // This will also trigger visibility toggle
-            //       keyboardType: TextInputType.number,
-            //       validator: (value) {
-            //         if (value == null || value.length != 4)
-            //           return 'PIN must be 4 digits';
-            //         if (!RegExp(r'^[0-9]+$').hasMatch(value))
-            //           return 'PIN must contain only numbers';
-            //         return null;
-            //       },
-            //     ),
-
-            //     SizedBox(height: 16),
-
-            //     GBTextField(
-            //       labelText: 'Website',
-            //       hintText: 'Enter website',
-            //       prefix: Text('https://'),
-            //       controller: TextEditingController(),
-            //       keyboardType: TextInputType.url,
-            //       prefixOutsideBorder: true,
-            //       validator: (value) {
-            //         if (value == null || value.isEmpty)
-            //           return 'Website is required';
-            //         if (!RegExp(r'^[a-zA-Z0-9.-]+$').hasMatch(value))
-            //           return 'Website must contain only letters, numbers, dots, and hyphens';
-            //         return null;
-            //       },
-            //     ),
-
-            //     SizedBox(height: 46),
-            //   ],
-            // ),
+            // ─────────────────────────────────────────────────────────────
+            // 🎨 THEME SWITCHER
+            // ─────────────────────────────────────────────────────────────
+            _Header("Theme Settings"),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border.all(color: colors.borderSubtler),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.brightness_6, color: colors.text),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Dark Mode',
+                          style: GlobusTypography.textMdBold.copyWith(
+                            color: colors.text,
+                          ),
+                        ),
+                        Text(
+                          'Check components in dark mode',
+                          style: GlobusTypography.textSmRegular.copyWith(
+                            color: colors.text,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Switch(
+                    value: themeState.isDark,
+                    onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -394,7 +237,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Text(
         title.toUpperCase(),
         style: const TextStyle(

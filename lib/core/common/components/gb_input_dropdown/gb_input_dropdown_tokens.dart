@@ -7,7 +7,7 @@ class GbInputDropdownTokens {
   const GbInputDropdownTokens._();
 
   // ===========================================================================
-  // 🔘 TRIGGER BUTTON TOKENS
+  // TRIGGER BUTTON TOKENS
   // ===========================================================================
   static Color backgroundColor(
     BuildContext context,
@@ -21,7 +21,11 @@ class GbInputDropdownTokens {
 
   static Color borderColor(BuildContext context, GbInputDropdownState state) {
     final colors = SemanticColors.of(context);
-    if (state == GbInputDropdownState.disabled) return colors.borderInput;
+    if (state == GbInputDropdownState.disabled ||
+        state == GbInputDropdownState.filled ||
+        state == GbInputDropdownState.normal) {
+      return colors.borderInput;
+    }
     return colors.borderSelected;
   }
 
@@ -64,7 +68,7 @@ class GbInputDropdownTokens {
       SemanticColors.of(context).iconSubtle;
 
   // ===========================================================================
-  // ☁️ MODAL OVERLAY TOKENS
+  //  MODAL OVERLAY TOKENS
   // ===========================================================================
   static Color modalContentBackgroundColor(BuildContext context) =>
       SemanticColors.of(context).surface;
@@ -76,12 +80,11 @@ class GbInputDropdownTokens {
 
   // Dynamic Overlay states
   static Color modalBarrierColorBefore(BuildContext context) =>
-      SemanticColors.of(context).blanketSubtler;
+      SemanticColors.of(context).blanket;
   static Color modalBarrierColorAfter(BuildContext context) =>
-      SemanticColors.of(context).blanketSubtle;
-
+      SemanticColors.of(context).blanket;
   // ===========================================================================
-  // 📋 MENU ITEM TOKENS (Strict State Matrix)
+  //  MENU ITEM TOKENS (Strict State Matrix)
   // ===========================================================================
   static Color itemDividerColor(BuildContext context) =>
       SemanticColors.of(context).borderSubtler;

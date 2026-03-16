@@ -19,6 +19,10 @@ class GbInputDropdown<T> extends StatefulWidget {
     this.label,
     this.hintText,
     this.placeholder,
+    // 🧠 🆕 Default Fallback Properties
+    this.defaultLeadingIcon,
+    this.defaultCountryCode,
+    this.defaultDotColor,
     this.type = GbInputDropdownType.normal,
     this.size = GbInputDropdownSize.md,
     this.state = GbInputDropdownState.normal,
@@ -34,6 +38,12 @@ class GbInputDropdown<T> extends StatefulWidget {
   final String? label;
   final String? hintText;
   final String? placeholder;
+
+  // 🧠 🆕 Added to the class
+  final Widget? defaultLeadingIcon;
+  final String? defaultCountryCode;
+  final Color? defaultDotColor;
+
   final String? toolTip;
   final String? modalTitle;
   final bool showSearch;
@@ -81,18 +91,53 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
     return const SizedBox.shrink();
   }
 
+  // 🧠 🆕 Dedicated builder for placeholder/default icons
+  Widget _buildPlaceholderLeadingWidget(Color iconColor) {
+    if (widget.type == GbInputDropdownType.normal &&
+        widget.defaultCountryCode != null) {
+      return SvgPicture.asset(
+        'assets/icons/flags/${widget.defaultCountryCode!.toLowerCase()}.svg',
+        width: GbInputDropdownGeometry.flagIconSize,
+        height: GbInputDropdownGeometry.flagIconSize,
+      );
+    }
+    if (widget.defaultLeadingIcon != null) {
+      if (widget.type == GbInputDropdownType.iconLeading) {
+        return IconTheme(
+          data: IconThemeData(
+            size: GbInputDropdownGeometry.leadingIconSize,
+            color: iconColor,
+          ),
+          child: widget.defaultLeadingIcon!,
+        );
+      }
+      return widget.defaultLeadingIcon!;
+    }
+    if (widget.type == GbInputDropdownType.dotLeading &&
+        widget.defaultDotColor != null) {
+      return Container(
+        width: GbInputDropdownGeometry.dotSize,
+        height: GbInputDropdownGeometry.dotSize,
+        decoration: BoxDecoration(
+          color: widget.defaultDotColor,
+          shape: BoxShape.circle,
+        ),
+      );
+    }
+    return const SizedBox.shrink();
+  }
+
   void _openModal() {
     if (!widget.enabled || widget.state == GbInputDropdownState.disabled) {
       return;
     }
 
     List<GbInputDropdownItem<T>> modalFilteredItems = List.from(widget.items);
-    bool isSuccessState = false; // Tracks if an item was just selected
+    bool isSuccessState = false;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      // We set these native colors to transparent so we can render our custom full-screen barrier inside
       backgroundColor: Colors.transparent,
       barrierColor: Colors.transparent,
       builder: (BuildContext context) {
@@ -102,11 +147,9 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
             final bottomInsets = MediaQuery.of(context).viewInsets.bottom;
 
             return SizedBox(
-              height:
-                  screenHeight, // Force full screen to control the barrier entirely
+              height: screenHeight,
               child: Stack(
                 children: [
-                  // 1. CUSTOM DYNAMIC BARRIER (Controls Blur and Blanket Color)
                   Positioned.fill(
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
@@ -129,7 +172,6 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                     ),
                   ),
 
-                  // 2. MODAL CONTENT BOX
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: SafeArea(
@@ -162,7 +204,6 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Drag Handle
                             Center(
                               child: Container(
                                 width: GbInputDropdownGeometry.dragHandleWidth,
@@ -185,7 +226,6 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                             ),
                             const SizedBox(height: 10),
 
-                            // Header Mother Container (Title & Search)
                             Container(
                               width: double.infinity,
                               padding: const EdgeInsets.symmetric(
@@ -263,7 +303,6 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                               ),
                             ),
 
-                            // Scrollable Item List
                             Flexible(
                               child: ListView.builder(
                                 padding: EdgeInsets.zero,
@@ -271,7 +310,6 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                                 itemCount: modalFilteredItems.length,
                                 itemBuilder: (context, index) {
                                   final item = modalFilteredItems[index];
-                                  // In success state, manually force the selected item to look active
                                   final isSelected = isSuccessState
                                       ? (item.value == widget.value)
                                       : (item.value == widget.value);
@@ -281,19 +319,15 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                                     isSelected: isSelected,
                                     type: widget.type,
                                     onTap: () async {
-                                      // 1. Trigger the Success Flash
                                       setModalState(() {
                                         isSuccessState = true;
-                                        // Update the local selection purely for visual feedback during the flash
                                         widget.onChanged?.call(item.value);
                                       });
 
-                                      // 2. Wait a split second to display the heavier blur and dark overlay
-                                      await Future.delayed(
-                                        const Duration(milliseconds: 300),
-                                      );
+                                      // await Future.delayed(
+                                      //   const Duration(milliseconds: 300),
+                                      // );
 
-                                      // 3. Close Modal
                                       if (mounted) {
                                         // ignore: use_build_context_synchronously
                                         if (Navigator.canPop(context)) {
@@ -353,6 +387,18 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
     );
     final iconColor = GbInputDropdownTokens.iconColor(context, currentState);
 
+    // 🧠 🆕 Calculate which leading elements to show
+    final bool showSelectionLeading =
+        hasSelection &&
+        (selectedItem.leading != null ||
+            selectedItem.countryCode != null ||
+            selectedItem.dotColor != null);
+    final bool showPlaceholderLeading =
+        !hasSelection &&
+        (widget.defaultLeadingIcon != null ||
+            widget.defaultCountryCode != null ||
+            widget.defaultDotColor != null);
+
     Widget trigger = GestureDetector(
       onTap: _openModal,
       child: Container(
@@ -372,12 +418,13 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
         ),
         child: Row(
           children: [
-            if (hasSelection) ...[
+            // 🧠 🆕 Show the selected item's leading widget, OR the default placeholder widget
+            if (showSelectionLeading) ...[
               _buildTriggerLeadingWidget(selectedItem, iconColor),
-              if (selectedItem.leading != null ||
-                  selectedItem.countryCode != null ||
-                  selectedItem.dotColor != null)
-                const SizedBox(width: GbInputDropdownGeometry.contentGap),
+              const SizedBox(width: GbInputDropdownGeometry.contentGap),
+            ] else if (showPlaceholderLeading) ...[
+              _buildPlaceholderLeadingWidget(iconColor),
+              const SizedBox(width: GbInputDropdownGeometry.contentGap),
             ],
 
             Expanded(
@@ -391,21 +438,27 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
             ),
 
             if (widget.toolTip != null) ...[
-              const SizedBox(width: 8),
+              const SizedBox(width: GbInputDropdownGeometry.contentGap),
               GbTooltipIcon(
                 message: widget.toolTip!,
                 child: SvgPicture.asset(
-                  'assets/icons/help.svg',
+                  'assets/icons/help_circle.svg',
+                  width: GbInputDropdownGeometry.leadingIconSize,
+                  height: GbInputDropdownGeometry.leadingIconSize,
                   colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
                 ),
               ),
+              const SizedBox(
+                width: GbInputDropdownGeometry.helpIconToDropdownSpacing,
+              ),
+            ] else ...[
+              const SizedBox(width: GbInputDropdownGeometry.trailingIconGap),
             ],
 
-            const SizedBox(width: GbInputDropdownGeometry.trailingIconGap),
             SvgPicture.asset(
-              'assets/icons/dropdown_icon.svg',
-              width: GbInputDropdownGeometry.chevronSize,
-              height: GbInputDropdownGeometry.chevronSize,
+              'assets/icons/arrow_down.svg',
+              width: GbInputDropdownGeometry.dropdownIconSize,
+              height: GbInputDropdownGeometry.dropdownIconSize,
               colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
             ),
           ],

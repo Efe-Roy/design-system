@@ -42,24 +42,24 @@ class ColorTokens {
 
   //COLORS WITH OPACITY
 
-  static const Color darkBlue500Opa40 = Color(0x66212C65);
-  static const Color darkBlue500Opa30 = Color(0x4D212C65);
-  static const Color darkBlue500Opa20 = Color(0x33212C65);
-  static const Color darkBlue200Opa40 = Color(0x66B5B9CC);
-  static const Color darkBlue200Opa30 = Color(0x4DB5B9CC);
-  static const Color darkBlue200Opa20 = Color(0x33B5B9CC);
-  static const Color whiteOpa50 = Color(0x80FFFFFF);
-  static const Color whiteOpa20 = Color(0x33FFFFFF);
-  static const Color whiteOpa0 = Color(0x00FFFFFF);
-  static const Color gray25Opa50 = Color(0x80F9FAFB);
-  static const Color gray25Opa20 = Color(0x33F9FAFB);
-  static const Color gray25Opa0 = Color(0x00F9FAFB);
-  static const Color gray900Opa50 = Color(0x80121926);
-  static const Color gray900Opa20 = Color(0x33121926);
-  static const Color gray900Opa0 = Color(0x00121926);
-  static const Color gray950Opa50 = Color(0x800D121C);
-  static const Color gray950Opa20 = Color(0x330D121C);
-  static const Color gray950Opa0 = Color(0x000D121C);
+  static final Color darkBlue500Opa40 = darkBlue500.withValues(alpha: 0.4);
+  static final Color darkBlue500Opa30 = darkBlue500.withValues(alpha: 0.3);
+  static final Color darkBlue500Opa20 = darkBlue500.withValues(alpha: 0.2);
+  static final Color darkBlue200Opa40 = darkBlue200.withValues(alpha: 0.4);
+  static final Color darkBlue200Opa30 = darkBlue200.withValues(alpha: 0.3);
+  static final Color darkBlue200Opa20 = darkBlue200.withValues(alpha: 0.2);
+  static final Color whiteOpa50 = white.withValues(alpha: 0.5);
+  static final Color whiteOpa20 = white.withValues(alpha: 0.2);
+  static final Color whiteOpa0 = white.withValues(alpha: 0.0);
+  static final Color gray25Opa50 = gray25.withValues(alpha: 0.5);
+  static final Color gray25Opa20 = gray25.withValues(alpha: 0.2);
+  static final Color gray25Opa0 = gray25.withValues(alpha: 0.0);
+  static final Color gray900Opa50 = gray900.withValues(alpha: 0.5);
+  static final Color gray900Opa20 = gray900.withValues(alpha: 0.2);
+  static final Color gray900Opa0 = gray900.withValues(alpha: 0.0);
+  static final Color gray950Opa50 = gray950.withValues(alpha: 0.5);
+  static final Color gray950Opa20 = gray950.withValues(alpha: 0.2);
+  static final Color gray950Opa0 = gray950.withValues(alpha: 0.0);
 
   // BRAND - RED
   static const Color red25 = Color(0xFFFFFAFA);

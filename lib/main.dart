@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await getItInit(); // sets up locator/navigatorKey etc.
+  await getItInit();
 
   runApp(BlocProvider(create: (context) => ThemeCubit(), child: const App()));
 }

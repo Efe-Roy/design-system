@@ -157,7 +157,7 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                       child: GlobusBlur.applyBlur(
                         blurFilter: isSuccessState
                             ? GlobusBlur.lg
-                            : GlobusBlur.vsm,
+                            : GlobusBlur.sm,
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 150),
                           color: isSuccessState
@@ -345,6 +345,17 @@ class _GbInputDropdownState<T> extends State<GbInputDropdown<T>> {
                       ),
                     ),
                   ),
+
+                  // // 3. COVER BOTTOM HOME INDICATOR ✅
+                  // Positioned(
+                  //   bottom: 0,
+                  //   left: 0,
+                  //   right: 0,
+                  //   child: Container(
+                  //     height: MediaQuery.of(context).padding.bottom + 40,
+                  //     color: Colors.black12,
+                  //   ),
+                  // ),
                 ],
               ),
             );
